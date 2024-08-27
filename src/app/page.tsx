@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
@@ -15,24 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Moon, Sun } from "lucide-react";
 
 export default function Component() {
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
   return (
     <main className="flex-1">
       <section className="w-full py-8 sm:py-12 md:py-24 lg:py-32">
