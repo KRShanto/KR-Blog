@@ -51,6 +51,7 @@ export default function RegisterPage() {
         name,
         email,
         password,
+        joinNewsletter,
       });
 
       if (res.type === "error") {

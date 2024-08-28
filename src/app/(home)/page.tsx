@@ -1,10 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import bOne from "../../public/b-one.avif";
-import bTwo from "../../public/b-Two.avif";
-import bThree from "../../public/b-three.avif";
+import bOne from "../../../public/b-one.avif";
+import bTwo from "../../../public/b-Two.avif";
+import bThree from "../../../public/b-three.avif";
 import {
   Card,
   CardContent,
@@ -12,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import NewsLetter from "./NewsLetter";
 
 export default async function Page() {
   return (
@@ -147,32 +146,8 @@ export default async function Page() {
           </div>
         </div>
       </section>
-      <section className="w-full bg-muted py-8 sm:py-12 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Subscribe to Our Newsletter
-              </h2>
-              <p className="mx-auto max-w-xs text-sm text-muted-foreground sm:max-w-md sm:text-base md:text-lg lg:text-xl">
-                Stay updated with our latest blog posts and news. We promise not
-                to spam you!
-              </p>
-            </div>
-            <div className="w-full max-w-xs space-y-2 sm:max-w-sm">
-              <form className="flex space-x-2">
-                <Input
-                  className="flex-1"
-                  placeholder="Enter your email"
-                  type="email"
-                  required
-                />
-                <Button type="submit">Subscribe</Button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </section>
+
+      <NewsLetter />
     </main>
   );
 }

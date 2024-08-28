@@ -8,9 +8,15 @@ interface RegisterData {
   name: string;
   email: string;
   password: string;
+  joinNewsletter: boolean;
 }
 
-export async function register({ name, email, password }: RegisterData) {
+export async function register({
+  name,
+  email,
+  password,
+  joinNewsletter,
+}: RegisterData) {
   // Check if any field is missing
   if (!name || !email || !password) {
     return {
@@ -58,6 +64,23 @@ export async function register({ name, email, password }: RegisterData) {
         password: hashedPassword,
       },
     });
+
+    // join the newsletter
+    if (joinNewsletter) {
+      // check if the user already subscribed
+      const previousSubscription = await db.newsletterSubscription.findUnique({
+        where: { email },
+      });
+
+      if (!previousSubscription) {
+        await db.newsletterSubscription.create({
+          data: {
+            name,
+            email,
+          },
+        });
+      }
+    }
 
     return { success: true };
   } catch (error: any) {
