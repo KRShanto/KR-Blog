@@ -26,7 +26,7 @@ export default async function Page() {
           </h1>
 
           <p
-            className="mt-3 text-center text-3xl text-slate-300"
+            className="mt-3 text-center text-3xl dark:text-slate-300"
             style={font.style}
           >
             Your ultimate source to supercharge your business.

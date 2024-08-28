@@ -39,7 +39,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`block rounded-md px-4 py-2 ${
+              className={`mx-5 mt-3 block rounded-md px-4 py-2 transition-colors duration-200 ease-in-out ${
                 pathname.includes(href)
                   ? "bg-gray-200 dark:bg-gray-800"
                   : "hover:bg-gray-200 dark:hover:bg-gray-800"
