@@ -15,11 +15,11 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,18 +31,29 @@ export default function LoginPage() {
     // Here you would typically send the login data to your server
     // This is a mock API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Login successful
-      alert("Login successful!");
-      // Reset form
-      setEmail("");
-      setPassword("");
-      setRememberMe(false);
-    } catch (err) {
-      setError("Invalid email or password. Please try again.");
-    }
+      if (!email || !password) {
+        throw new Error("Please fill in all fields.");
+      }
 
-    setIsSubmitting(false);
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      setIsSubmitting(false);
+
+      if (res?.error) {
+        throw new Error("");
+      }
+
+      // Redirect to the home page
+      window.location.href = "/";
+    } catch (err: any) {
+      setError(
+        err.message ||
+          "Invalid email or password. Please try again. Or sign up if you don't have an account.",
+      );
+    }
   };
 
   return (

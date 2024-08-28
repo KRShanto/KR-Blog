@@ -16,9 +16,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { register } from "@/actions/register";
+import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,33 +33,42 @@ export default function RegisterPage() {
     setError("");
     setIsSubmitting(true);
 
-    // Basic validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Here you would typically send the registration data to your server
-    // This is a mock API call
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // Registration successful
-      alert(
-        `Registration successful! You can now log in. Newsletter subscription: ${joinNewsletter ? "Yes" : "No"}`,
-      );
-      // Reset form
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      setJoinNewsletter(false);
+      // Basic validation
+      if (!name || !email || !password || !confirmPassword) {
+        throw new Error("Please fill in all fields.");
+      }
+
+      if (password !== confirmPassword) {
+        throw new Error("Passwords do not match");
+      }
+
+      if (password.length < 8) {
+        throw new Error("Password must be at least 8 characters long.");
+      }
+
+      const res = await register({
+        name,
+        email,
+        password,
+      });
+
+      if (res.type === "error") {
+        throw new Error(res.message);
+      }
+
+      const res2 = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res2?.error) {
+        throw new Error("");
+      }
+
+      // Redirect to the home page
+      window.location.href = "/";
     } catch (err) {
       setError("An error occurred during registration. Please try again.");
     }
@@ -78,12 +89,12 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="name">Name</Label>
                 <Input
-                  id="username"
-                  placeholder="Your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  id="name"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
               </div>
