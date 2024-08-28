@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { db } from "./../../lib/db";
 
 import * as EmailValidator from "email-validator";
@@ -6,9 +7,11 @@ import * as EmailValidator from "email-validator";
 export async function createNewsletter({
   name,
   email,
+  subscribed = true,
 }: {
   name: string;
   email: string;
+  subscribed?: boolean;
 }) {
   if (!name || !email) {
     return {
@@ -39,8 +42,11 @@ export async function createNewsletter({
     data: {
       name,
       email,
+      subscribed,
     },
   });
+
+  revalidatePath("/admin/newsletter");
 
   return {
     type: "success",
