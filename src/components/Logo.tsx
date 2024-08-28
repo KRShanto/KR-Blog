@@ -3,6 +3,7 @@ import { Kanit } from "next/font/google";
 
 const font = Kanit({
   weight: "700",
+  subsets: ["latin"],
 });
 
 export default function Logo() {

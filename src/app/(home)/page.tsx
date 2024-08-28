@@ -14,7 +14,7 @@ import NewsLetter from "./NewsLetter";
 import Logo from "@/components/Logo";
 import { Outfit } from "next/font/google";
 
-const font = Outfit({});
+const font = Outfit({ subsets: ["latin"] });
 
 export default async function Page() {
   return (
