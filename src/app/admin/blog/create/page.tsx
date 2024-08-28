@@ -46,7 +46,6 @@ import { useRouter } from "next/navigation";
 export default function Page() {
   const { toast } = useToast();
   const { data: categories } = useServerGet(getCategories);
-  console.log(categories);
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   const [blogData, setBlogData] = useState({
     title: "",
@@ -419,7 +418,11 @@ export default function Page() {
                     size="sm"
                     variant="outline"
                     onClick={() =>
-                      editor?.chain()?.focus()?.toggleHeading({ level: 2 }).run()
+                      editor
+                        ?.chain()
+                        ?.focus()
+                        ?.toggleHeading({ level: 2 })
+                        .run()
                     }
                   >
                     <Heading2 className="h-4 w-4" />
@@ -436,7 +439,7 @@ export default function Page() {
                 </div>
                 <EditorContent
                   editor={editor}
-                  className="prose dark:prose-invert min-h-[500px] max-w-none"
+                  className="prose min-h-[500px] max-w-none dark:prose-invert"
                 />
               </div>
             </TabsContent>
@@ -457,7 +460,7 @@ export default function Page() {
                   </span>
                 </div>
                 <div
-                  className="prose dark:prose-invert max-w-none"
+                  className="prose max-w-none dark:prose-invert"
                   dangerouslySetInnerHTML={{ __html: blogData.content }}
                 />
               </div>

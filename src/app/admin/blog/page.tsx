@@ -17,14 +17,12 @@ const data = [
   },
 ];
 export default async function Page() {
-  // Fetch data from an API or a database
   const blogPosts = await db.post.findMany();
-  console.log(blogPosts);
   return (
     <main className="flex-1 overflow-auto p-4 md:p-8">
       <div className="flex flex-col justify-center space-y-3">
-        {data.map((d) => (
-          <BlogCard key={d.id} blog={d} />
+        {blogPosts.map((blog) => (
+          <BlogCard key={blog.id} blog={blog} />
         ))}
       </div>
     </main>
