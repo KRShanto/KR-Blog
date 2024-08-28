@@ -1,7 +1,3 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -10,26 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Plus, Pencil, Trash, CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import AddSubscriber from "./AddSubscriber";
 import { db } from "@/lib/db";
 import EditSubscriber from "./EditSubscriber";
 import DeleteSubscriber from "./DeleteSubscriber";
-
-type Subscriber = {
-  id: number;
-  name: string;
-  email: string;
-  subscribed: boolean;
-};
 
 export default async function Page() {
   const subscribers = await db.newsletterSubscription.findMany();
