@@ -32,6 +32,7 @@
     "next": "^15.0.0-rc.0",
     "next-auth": "^5.0.0-beta.20",
     "next-themes": "^0.3.0",
+    "nextjs-toploader": "^3.6.13",
     "react": "^19.0.0-rc-f90a6bcc-20240827",
     "react-dom": "^19.0.0-rc-f90a6bcc-20240827",
     "react-dropzone": "^14.2.3",

@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import NextTopLoader from "nextjs-toploader";
 
 import { auth } from "./auth";
 import { SessionProvider } from "next-auth/react";
@@ -33,6 +34,7 @@ export default async function RootLayout({
             disableTransitionOnChange
             enableSystem
           >
+            <NextTopLoader showSpinner={false} />
             <Navbar />
             <div className="flex min-h-screen flex-col bg-background text-foreground">
               {children}
