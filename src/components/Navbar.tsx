@@ -4,8 +4,12 @@ import React from "react";
 import { Button } from "./ui/button";
 import NavbarThemeSwitch from "./NavbarThemeSwitch";
 import Link from "next/link";
+import { auth } from "@/app/auth";
+import LogoutButton from "./navbar/LogoutButton";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = await auth();
+
   return (
     <header className="flex h-14 items-center border-b px-4 lg:px-6">
       <Link className="flex items-center justify-center" href="#">
@@ -50,12 +54,16 @@ export default function Navbar() {
 
         <NavbarThemeSwitch />
 
-        <Link
-          className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-          href="/login"
-        >
-          Login
-        </Link>
+        {session ? (
+          <LogoutButton />
+        ) : (
+          <Link
+            className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
+            href="/login"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </header>
   );
