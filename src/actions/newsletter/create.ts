@@ -3,7 +3,20 @@ import { db } from "./../../lib/db";
 
 import * as EmailValidator from "email-validator";
 
-export async function createNewsletter({ email }: { email: string }) {
+export async function createNewsletter({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) {
+  if (!name || !email) {
+    return {
+      type: "error",
+      message: "Please fill in all fields",
+    };
+  }
+
   if (!EmailValidator.validate(email)) {
     return {
       type: "error",
@@ -24,6 +37,7 @@ export async function createNewsletter({ email }: { email: string }) {
 
   await db.newsletterSubscription.create({
     data: {
+      name,
       email,
     },
   });

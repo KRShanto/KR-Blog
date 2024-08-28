@@ -4,14 +4,14 @@ import { createNewsletter } from "@/actions/newsletter/create";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
 
 export default function NewsLetter() {
   const { toast } = useToast();
 
   async function handleSubmit(data: FormData) {
+    const name = data.get("name") as string;
     const email = data.get("email") as string;
-    const res = await createNewsletter({ email });
+    const res = await createNewsletter({ name, email });
 
     if (res.type === "error") {
       toast({
@@ -38,10 +38,16 @@ export default function NewsLetter() {
               to spam you!
             </p>
           </div>
-          <div className="w-full max-w-xs space-y-2 sm:max-w-sm">
-            <form className="flex space-x-2">
+          <div className="w-[30rem]">
+            <form className="flex flex-col space-y-2">
               <Input
-                className="flex-1"
+                className="p-6 text-base"
+                placeholder="Enter your name"
+                required
+                name="name"
+              />
+              <Input
+                className="p-6 text-base"
                 placeholder="Enter your email"
                 type="email"
                 required
