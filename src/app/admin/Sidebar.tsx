@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FileText, Mail, Menu, Tag, Users, X } from "lucide-react";
+import { Contact, FileText, Mail, Menu, Tag, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +11,7 @@ const paths = [
   { href: "/admin/category", icon: Tag, label: "Categories" },
   { href: "/admin/user", icon: Users, label: "Users" },
   { href: "/admin/newsletter", icon: Mail, label: "Newsletter" },
+  { href: "/admin/contact", icon: Contact, label: "Contact" },
 ];
 
 export default function Sidebar() {
@@ -38,7 +39,7 @@ export default function Sidebar() {
             <Link
               key={href}
               href={href}
-              className={`block rounded-md px-4 py-2 ${
+              className={`mx-5 mt-3 block rounded-md px-4 py-2 transition-colors duration-200 ease-in-out ${
                 pathname.includes(href)
                   ? "bg-gray-200 dark:bg-gray-800"
                   : "hover:bg-gray-200 dark:hover:bg-gray-800"

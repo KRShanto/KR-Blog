@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import bOne from "../../../public/b-one.avif";
-import bTwo from "../../../public/b-Two.avif";
+import bTwo from "../../../public/b-two.avif";
 import bThree from "../../../public/b-three.avif";
 import {
   Card,
@@ -11,16 +11,28 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import NewsLetter from "./NewsLetter";
+import Logo from "@/components/Logo";
+import { Outfit } from "next/font/google";
+
+const font = Outfit({ subsets: ["latin"] });
 
 export default async function Page() {
   return (
     <main className="flex-1">
-      <section className="w-full py-8 sm:py-12 md:py-24 lg:py-32">
+      <section className="w-full py-8">
         <div className="container mx-auto px-4 sm:px-6">
-          <h2 className="mb-6 text-2xl font-bold tracking-tighter sm:mb-8 sm:text-4xl md:text-5xl">
-            Latest Posts
-          </h2>
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <h1 className="text-center text-5xl font-bold">
+            Welcome to <Logo />
+          </h1>
+
+          <p
+            className="mt-3 text-center text-3xl dark:text-slate-300"
+            style={font.style}
+          >
+            Your ultimate source to supercharge your business.
+          </p>
+
+          <div className="mt-3 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card className="md:col-span-2 lg:row-span-2">
               <CardHeader>
                 <Image
