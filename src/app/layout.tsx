@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 import { auth } from "./auth";
 import { SessionProvider } from "next-auth/react";
@@ -36,6 +37,7 @@ export default async function RootLayout({
             <div className="flex min-h-screen flex-col bg-background text-foreground">
               {children}
             </div>
+            <Toaster />
             <Footer />
           </ThemeProvider>
         </SessionProvider>

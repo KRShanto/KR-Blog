@@ -14,7 +14,6 @@ model User {
   password  String
   role      UserRole  @default(USER)
   image     String?
-  posts     Post[]
   comments  Comment[]
   likes     Like[]
   createdAt DateTime  @default(now())
@@ -27,25 +26,25 @@ enum UserRole {
 }
 
 model Post {
-  id                   Int       @id @default(autoincrement())
-  title                String
-  slug                 String    @unique
-  description          String
-  content              String
-  contentHTMl          String
-  image                String
-  imageAlt             String
-  imageAttributionHTML String?
-  published            Boolean   @default(false)
-  author               User      @relation(fields: [authorId], references: [id])
-  authorId             Int
-  comments             Comment[]
-  likes                Like[]
-  category             Category  @relation(fields: [categoryId], references: [id])
-  categoryId           Int
-  isFeatured           Boolean   @default(false)
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  id               Int       @id @default(autoincrement())
+  slug             String    @unique
+  title            String
+  seoTitle         String
+  description      String
+  seoDescription   String
+  content          String // html
+  image            String
+  imageAlt         String
+  imageAttribution String? // html
+  published        Boolean   @default(false)
+  keywords         String[]
+  comments         Comment[]
+  likes            Like[]
+  category         Category  @relation(fields: [categoryId], references: [id])
+  categoryId       Int
+  isFeatured       Boolean   @default(false)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model Comment {
@@ -73,7 +72,8 @@ model Like {
 
 model Category {
   id    Int    @id @default(autoincrement())
-  name  String @unique
+  name  String
+  slug  String @unique
   posts Post[]
 }
 
