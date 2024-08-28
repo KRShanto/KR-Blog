@@ -16,7 +16,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Switch } from "@/components/ui/switch";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { register } from "@/actions/register";
+import { register } from "@/actions/auth/register";
 import { signIn } from "next-auth/react";
 
 export default function RegisterPage() {
