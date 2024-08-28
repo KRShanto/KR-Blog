@@ -9,17 +9,20 @@ import {
 } from "@/components/ui/table";
 import { Category } from "@prisma/client";
 import { Pencil, Trash } from "lucide-react";
-import { useState } from "react";
 
 type TProps = {
   categories: Category[];
   setIsEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDeleteModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setEditCategory: React.Dispatch<React.SetStateAction<Category | null>>;
+  setCategoryId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 export default function CategoryTable({
   categories,
   setIsDeleteModalOpen,
   setIsEditModalOpen,
+  setEditCategory,
+  setCategoryId,
 }: TProps) {
   return (
     <div className="overflow-x-auto">
@@ -52,11 +55,7 @@ export default function CategoryTable({
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      //   setCurrentCategory(category);
-                      //   setNewCategory({
-                      //     name: category.name,
-                      //     slug: category.slug,
-                      //   });
+                      setEditCategory(category);
                       setIsEditModalOpen(true);
                     }}
                   >
@@ -66,7 +65,7 @@ export default function CategoryTable({
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      //   setCurrentCategory(category);
+                      setCategoryId(category?.id!);
                       setIsDeleteModalOpen(true);
                     }}
                   >
