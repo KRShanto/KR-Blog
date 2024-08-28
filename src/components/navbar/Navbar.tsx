@@ -1,11 +1,11 @@
 import { Moon, MountainIcon, SearchIcon, Sun } from "lucide-react";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import NavbarThemeSwitch from "./NavbarThemeSwitch";
 import Link from "next/link";
 import { auth } from "@/app/auth";
-import LogoutButton from "./navbar/LogoutButton";
+import LogoutButton from "./LogoutButton";
 
 export default async function Navbar() {
   const session = await auth();
@@ -41,6 +41,15 @@ export default async function Navbar() {
         >
           Contact
         </Link>
+
+        {session && session.user.role === "ADMIN" && (
+          <Link
+            className="text-sm font-medium underline-offset-4 hover:underline"
+            href="/admin/blog"
+          >
+            Admin
+          </Link>
+        )}
       </nav>
       <div className="ml-4 flex items-center gap-2">
         <form className="relative">
