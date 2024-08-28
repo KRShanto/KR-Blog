@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Category } from "@prisma/client";
 import { useState } from "react";
 import { addCategory, editCategory } from "../actions";
+import ErrorAlert from "@/components/ErrorAlert";
+import { useToast } from "@/components/ui/use-toast";
 
 type TProps = {
   fromEdit?: boolean;
@@ -28,6 +30,7 @@ export default function AddEditCategory({
   setCategories,
 }: TProps) {
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
   const [newCategory, setNewCategory] = useState(
     fromEdit && category
       ? { name: category.name, slug: category.slug }
@@ -72,68 +75,71 @@ export default function AddEditCategory({
         setIsModalOpen(false);
       }
     } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+      });
       setError(err.message);
     }
   };
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          {error && (
-            <p className="py-1 text-center text-sm text-red-500">{error}</p>
-          )}
-          <DialogTitle className="text-gray-900 dark:text-gray-100">
-            {fromEdit ? "Edit Category" : "Add New Category"}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="edit-name"
-              className="text-right text-gray-900 dark:text-gray-100"
-            >
-              Name
-            </Label>
-            <Input
-              id="edit-name"
-              required
-              value={newCategory.name}
-              onChange={(e) =>
-                setNewCategory({ ...newCategory, name: e.target.value })
-              }
-              className="col-span-3"
-            />
+    <>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
+              {fromEdit ? "Edit Category" : "Add New Category"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="edit-name"
+                className="text-right text-gray-900 dark:text-gray-100"
+              >
+                Name
+              </Label>
+              <Input
+                id="edit-name"
+                required
+                value={newCategory.name}
+                onChange={(e) =>
+                  setNewCategory({ ...newCategory, name: e.target.value })
+                }
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label
+                htmlFor="edit-slug"
+                className="text-right text-gray-900 dark:text-gray-100"
+              >
+                Slug
+              </Label>
+              <Input
+                id="edit-slug"
+                value={newCategory.slug}
+                required
+                onChange={(e) =>
+                  setNewCategory({
+                    ...newCategory,
+                    slug: e.target.value.toLowerCase().replace(/ /g, "-"),
+                  })
+                }
+                className="col-span-3"
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              htmlFor="edit-slug"
-              className="text-right text-gray-900 dark:text-gray-100"
+          <DialogFooter>
+            <Button
+              type="submit"
+              onClick={fromEdit ? handleEditCategory : handleAddCategory}
             >
-              Slug
-            </Label>
-            <Input
-              id="edit-slug"
-              value={newCategory.slug}
-              required
-              onChange={(e) =>
-                setNewCategory({
-                  ...newCategory,
-                  slug: e.target.value.toLowerCase().replace(/ /g, "-"),
-                })
-              }
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={fromEdit ? handleEditCategory : handleAddCategory}
-          >
-            {fromEdit ? "Save Changes" : "Add Category"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+              {fromEdit ? "Save Changes" : "Add Category"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

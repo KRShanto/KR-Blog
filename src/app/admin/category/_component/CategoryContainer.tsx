@@ -6,12 +6,15 @@ import DeleteModal from "@/components/DeleteModal";
 import CategoryTable from "./CategoryTable";
 import CategoryHead from "./CategoryHead";
 import { deleteCategory } from "../actions";
+import { useToast } from "@/components/ui/use-toast";
 
 type TProps = {
   categoryItems?: Category[];
 };
 
 export default function CategoryContainer({ categoryItems }: TProps) {
+  const { toast } = useToast();
+
   const [categories, setCategories] = useState<Category[]>(
     categoryItems ? categoryItems : [],
   );
@@ -37,6 +40,10 @@ export default function CategoryContainer({ categoryItems }: TProps) {
       );
       setIsDeleteModalOpen(false);
     } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+      });
       setError(err.message);
     }
   };

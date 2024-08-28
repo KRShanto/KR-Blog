@@ -24,9 +24,9 @@ export default function CopyToClipboard({ copyText }: TProps) {
       className="h-[40px] w-[40px] p-0"
     >
       {copies ? (
-        <ClipboardCheck className="size-4 text-green-600 md:size-5" />
+        <ClipboardCheck size={20} className="text-green-600" />
       ) : (
-        <Copy className="size-4 md:size-5" />
+        <Copy size={20} />
       )}
     </Button>
   );

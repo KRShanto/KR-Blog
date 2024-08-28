@@ -4,8 +4,9 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import CopyToClipboard from "./CopyToClipboard";
 import { deleteBlog } from "../actions";
-import DeleteModal from '@/components/DeleteModal'
+import DeleteModal from "@/components/DeleteModal";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 type TProps = {
   blogId: number;
@@ -14,6 +15,7 @@ type TProps = {
 export default function BlogActions({ blogId }: TProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const hostUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const { toast } = useToast();
 
   const [error, setError] = useState(null);
   const handleDeleteBlog = async () => {
@@ -21,6 +23,10 @@ export default function BlogActions({ blogId }: TProps) {
       await deleteBlog(blogId);
       setIsDeleteModalOpen(false);
     } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+      });
       setError(err.message);
     }
   };
@@ -34,9 +40,11 @@ export default function BlogActions({ blogId }: TProps) {
         href={`/blog/post/${blogId}`}
         style={{ padding: "0px" }}
       >
-        <Eye size={24} />
+        <Eye size={20} />
       </Link>
+
       <CopyToClipboard copyText={`${hostUrl}/blog/post/${blogId}`} />
+
       <Link
         className={buttonVariants({
           variant: "outline",
@@ -45,17 +53,23 @@ export default function BlogActions({ blogId }: TProps) {
         style={{ padding: "0px" }}
         href={`/admin/blog/edit/${blogId}`}
       >
-        <Pencil size={24} />
+        <Pencil size={20} />
       </Link>
       {/* blog delete modal */}
-      <DeleteModal title="blog" isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} onDelete={handleDeleteBlog} />
+      <DeleteModal
+        title="blog"
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        onDelete={handleDeleteBlog}
+      />
+
       <Button
         onClick={() => setIsDeleteModalOpen(true)}
         type="submit"
         variant="outline"
         className="h-[40px] w-[40px] p-0"
       >
-        <Trash2 size={24} />
+        <Trash2 size={20} />
       </Button>
     </>
   );
