@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import bOne from "../../../public/b-one.avif";
-import bTwo from "../../../public/b-Two.avif";
+import bTwo from "../../../public/b-two.avif";
 import bThree from "../../../public/b-three.avif";
 import {
   Card,

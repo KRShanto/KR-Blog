@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,32 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Facebook, Github, Instagram, Linkedin, Twitter } from "lucide-react";
-import { useState } from "react";
+import Submit from "./Submit";
 
 export default function ContactForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Here you would typically send the form data to your server
-    // This is a mock API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Reset form
-    setName("");
-    setEmail("");
-    setMessage("");
-    setIsSubmitting(false);
-
-    // Here you would typically show a success message to the user
-    alert("Thank you for your message! We'll get back to you soon.");
-  };
-
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>
@@ -49,26 +24,19 @@ export default function ContactForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
+                <Input id="name" name="name" placeholder="Your name" required />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   placeholder="Your email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -76,16 +44,13 @@ export default function ContactForm() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Your message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
                   required
                 />
               </div>
             </div>
-            <Button type="submit" className="mt-4" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Send Message"}
-            </Button>
+            <Submit />
           </form>
         </CardContent>
         <CardFooter className="flex flex-col items-start">
