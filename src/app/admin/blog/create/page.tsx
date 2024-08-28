@@ -419,7 +419,7 @@ export default function Page() {
                     size="sm"
                     variant="outline"
                     onClick={() =>
-                      editor?.chain().focus().toggleHeading({ level: 2 }).run()
+                      editor?.chain()?.focus()?.toggleHeading({ level: 2 }).run()
                     }
                   >
                     <Heading2 className="h-4 w-4" />
