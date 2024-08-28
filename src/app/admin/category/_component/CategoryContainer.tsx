@@ -14,10 +14,15 @@ export default function CategoryContainer({ categoryItems }: TProps) {
   const [categories, setCategories] = useState<Category[]>(
     categoryItems ? categoryItems : [],
   );
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const [editCategory, setEditCategory] = useState<Category | null>(null);
+
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
   return (
@@ -55,10 +60,10 @@ export default function CategoryContainer({ categoryItems }: TProps) {
 
       {/* Delete Category Modal */}
       <DeleteCategoryModal
-              categoryId={categoryId!}
-              isDeleteModalOpen={isDeleteModalOpen}
-              setIsDeleteModalOpen={setIsDeleteModalOpen}
-              setCategories={setCategories}
+        categoryId={categoryId!}
+        isDeleteModalOpen={isDeleteModalOpen}
+        setIsDeleteModalOpen={setIsDeleteModalOpen}
+        setCategories={setCategories}
       />
     </>
   );
