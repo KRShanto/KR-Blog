@@ -12,8 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { auth } from "./auth";
 
-export default function Component() {
+export default async function Page() {
+  const session = await auth();
+
+  console.log(session);
+
   return (
     <main className="flex-1">
       <section className="w-full py-8 sm:py-12 md:py-24 lg:py-32">
