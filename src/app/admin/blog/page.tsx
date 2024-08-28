@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default async function Page() {
   const blogPosts = await db.post.findMany();
-
+  
   return (
     <main className="flex-1 overflow-auto p-4 md:p-8">
       <div className="mb-6 flex flex-col items-center justify-between md:flex-row">
@@ -22,7 +22,7 @@ export default async function Page() {
 
       <div className="flex flex-col justify-center space-y-3">
         {blogPosts.map((blog) => (
-          <BlogCard key={blog.id} blog={blog} />
+          <BlogCard key={blog.id} blog={blog} role="ADMIN"/>
         ))}
       </div>
     </main>
