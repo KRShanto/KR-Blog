@@ -6,16 +6,18 @@ import NavbarThemeSwitch from "./NavbarThemeSwitch";
 import Link from "next/link";
 import { auth } from "@/app/auth";
 import LogoutButton from "./LogoutButton";
+import { SITE_NAME } from "@/lib/consts";
+import Logo from "../Logo";
 
 export default async function Navbar() {
   const session = await auth();
 
   return (
     <header className="flex h-14 items-center border-b px-4 lg:px-6">
-      <Link className="flex items-center justify-center" href="#">
-        <MountainIcon className="h-6 w-6" />
-        <span className="sr-only">Acme Inc</span>
+      <Link className="text-4xl" href="/">
+        <Logo />
       </Link>
+
       <nav className="ml-auto flex gap-4 sm:gap-6">
         <Link
           className="text-sm font-medium underline-offset-4 hover:underline"
