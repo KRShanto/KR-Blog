@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import bcrypt from "bcrypt";
 import * as EmailValidator from "email-validator";
+import { revalidatePath } from "next/cache";
 
 interface RegisterData {
   name: string;
@@ -81,6 +82,8 @@ export async function register({
         });
       }
     }
+
+    revalidatePath("/admin/user");
 
     return { success: true };
   } catch (error: any) {

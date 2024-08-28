@@ -11,13 +11,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Trash } from "lucide-react";
-import { deleteNewsletterSubscription } from "@/actions/newsletter/delete";
+import { deleteUser } from "@/actions/auth/delete";
 
-export default function DeleteSubscriber({ id }: { id: number }) {
+export default function DeleteUser({ id }: { id: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
   async function handleDelete() {
-    await deleteNewsletterSubscription(id);
+    await deleteUser(id);
     setIsOpen(false);
   }
 
@@ -30,10 +30,10 @@ export default function DeleteSubscriber({ id }: { id: number }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Delete Subscriber</DialogTitle>
+          <DialogTitle>Delete User</DialogTitle>
         </DialogHeader>
 
-        <p>Are you sure you want to delete this subscriber?</p>
+        <p>Are you sure you want to delete this user?</p>
         <DialogFooter>
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel

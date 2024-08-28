@@ -3,31 +3,53 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus } from "lucide-react";
-import { DialogTrigger } from "@radix-ui/react-dialog";
-import { createNewsletter } from "@/actions/newsletter/create";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Pencil } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { editUser } from "@/actions/auth/edit";
 
-export default function AddSubscriber() {
+export default function EditUser({
+  id,
+  name,
+  email,
+  role,
+}: {
+  id: number;
+  name: string;
+  email: string;
+  role: "USER" | "ADMIN";
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(data: FormData) {
     const name = data.get("name") as string;
     const email = data.get("email") as string;
-    const subscribed = data.get("subscribed") === "on";
+    const role = data.get("role") as "USER" | "ADMIN";
 
-    const res = await createNewsletter({ name, email, subscribed });
+    const res = await editUser({
+      id,
+      name,
+      email,
+      role,
+    });
 
     if (res.type === "error") {
       setError(res.message);
@@ -39,33 +61,56 @@ export default function AddSubscriber() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
-          <Plus className="mr-2 h-4 w-4" /> Add Subscriber
+        <Button variant="ghost" size="sm">
+          <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <form>
           <DialogHeader>
-            <DialogTitle>Add New Subscriber</DialogTitle>
+            <DialogTitle>Edit User</DialogTitle>
           </DialogHeader>
-
           <div className="mt-5 flex flex-col gap-5">
             <div>
               <Label htmlFor="name" className="text-right">
                 Name
               </Label>
-              <Input id="name" className="mt-1" name="name" />
+              <Input
+                id="name"
+                defaultValue={name}
+                className="mt-1"
+                name="name"
+              />
             </div>
             <div>
               <Label htmlFor="email" className="text-right">
                 Email
               </Label>
-              <Input id="email" type="email" name="email" className="mt-1" />
+              <Input
+                id="email"
+                type="email"
+                defaultValue={email}
+                name="email"
+                className="mt-1"
+              />
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="subscribed" name="subscribed" defaultChecked />
-              <Label htmlFor="subscribed">Subscribed</Label>
+            <div className="mb-5">
+              <Label htmlFor="role" className="text-right">
+                Role
+              </Label>
+              <Select defaultValue={role} name="role">
+                <SelectTrigger>
+                  <SelectValue placeholder="User Role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Role</SelectLabel>
+                    <SelectItem value="USER">User</SelectItem>
+                    <SelectItem value="ADMIN">Admin</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -79,7 +124,7 @@ export default function AddSubscriber() {
 
           <DialogFooter>
             <Button type="submit" formAction={handleSubmit}>
-              Add Subscriber
+              Save Changes
             </Button>
           </DialogFooter>
         </form>

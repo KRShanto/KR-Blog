@@ -5,14 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -21,10 +13,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Plus, Pencil, Trash, CheckCircle, XCircle } from "lucide-react";
-import AddSubscriber from "./AddSubscriber";
-import { db } from "@/lib/db";
+import { AlertCircle, Pencil } from "lucide-react";
 import { editNewsletterSubscription } from "@/actions/newsletter/edit";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EditSubscriber({
   id,
@@ -105,6 +96,15 @@ export default function EditSubscriber({
               <Label htmlFor="edit-subscribed">Subscribed</Label>
             </div>
           </div>
+
+          {error && (
+            <Alert variant="destructive" className="mb-2 sm:mb-5">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
           <DialogFooter>
             <Button type="submit" formAction={handleSubmit}>
               Save Changes
