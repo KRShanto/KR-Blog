@@ -1,18 +1,19 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import CopyToClipboard from "./CopyToClipboard";
 import { deleteBlog } from "../actions";
 import DeleteModal from "@/components/DeleteModal";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Post } from "@prisma/client";
 
 type TProps = {
-  blogId: number;
+  blog: Post;
 };
 
-export default function BlogActions({ blogId }: TProps) {
+export default function BlogActions({ blog }: TProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const hostUrl = process.env.NEXT_PUBLIC_APP_URL;
   const { toast } = useToast();
@@ -20,7 +21,7 @@ export default function BlogActions({ blogId }: TProps) {
   const [error, setError] = useState(null);
   const handleDeleteBlog = async () => {
     try {
-      await deleteBlog(blogId);
+      await deleteBlog(blog.id);
       setIsDeleteModalOpen(false);
     } catch (err: any) {
       toast({
@@ -32,26 +33,32 @@ export default function BlogActions({ blogId }: TProps) {
   };
   return (
     <div className="flex gap-3">
+      {blog.published ? (
+        <Link
+          className={buttonVariants({
+            variant: "outline",
+            className: "h-[40px] w-[40px]",
+          })}
+          href={`/blog/post/${blog.id}`}
+          style={{ padding: "0px" }}
+        >
+          <Eye size={20} />
+        </Link>
+      ) : (
+        <Button className="h-[40px] w-[40px] p-0" variant="outline">
+          <EyeOff size={20} />
+        </Button>
+      )}
+
+      <CopyToClipboard copyText={`${hostUrl}/blog/post/${blog.id}`} />
+
       <Link
         className={buttonVariants({
           variant: "outline",
           className: "h-[40px] w-[40px]",
         })}
-        href={`/blog/post/${blogId}`}
         style={{ padding: "0px" }}
-      >
-        <Eye size={20} />
-      </Link>
-
-      <CopyToClipboard copyText={`${hostUrl}/blog/post/${blogId}`} />
-
-      <Link
-        className={buttonVariants({
-          variant: "outline",
-          className: "h-[40px] w-[40px]",
-        })}
-        style={{ padding: "0px" }}
-        href={`/admin/blog/edit/${blogId}`}
+        href={`/admin/blog/edit/${blog.id}`}
       >
         <Pencil size={20} />
       </Link>
