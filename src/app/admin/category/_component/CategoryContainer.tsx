@@ -5,8 +5,8 @@ import AddEditCategory from "./AddEditCategoryModal";
 import DeleteModal from "@/components/DeleteModal";
 import CategoryTable from "./CategoryTable";
 import CategoryHead from "./CategoryHead";
-import { deleteCategory } from "../actions";
 import { useToast } from "@/components/ui/use-toast";
+import { deleteCategory } from "@/actions/category/delete";
 
 type TProps = {
   categoryItems?: Category[];
