@@ -31,7 +31,7 @@ export default function BlogActions({ blogId }: TProps) {
     }
   };
   return (
-    <>
+    <div className="flex gap-3">
       <Link
         className={buttonVariants({
           variant: "outline",
@@ -71,6 +71,6 @@ export default function BlogActions({ blogId }: TProps) {
       >
         <Trash2 size={20} />
       </Button>
-    </>
+    </div>
   );
 }
