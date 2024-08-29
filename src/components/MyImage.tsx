@@ -19,7 +19,6 @@ export default function MyImage({
   ...props
 }: TProps) {
   const [isLoad, setIsLoad] = useState(true);
-  console.log(isLoad);
   return (
     <>
       {isLoad && (
@@ -36,7 +35,7 @@ export default function MyImage({
           visibility: isLoad ? "hidden" : "visible",
           height: isLoad ? "0px" : `${height}px`,
         }}
-        onLoadingComplete={() => setIsLoad(false)}
+        onLoad={() => setIsLoad(false)}
         src={src}
         alt={alt}
         width={width}
