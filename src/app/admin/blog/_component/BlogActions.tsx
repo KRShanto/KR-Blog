@@ -3,10 +3,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import CopyToClipboard from "./CopyToClipboard";
-import { deleteBlog } from "../actions";
 import DeleteModal from "@/components/DeleteModal";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { deleteBlog } from "@/actions/blog/delete";
 
 type TProps = {
   blogId: number;
