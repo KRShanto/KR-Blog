@@ -27,8 +27,10 @@ export default function Categories({
       <Link
         href={`/blog`}
         className={cn(
-          "mb-2 flex items-center gap-2 rounded-lg bg-zinc-200 p-2",
-          !selectedCategory ? "bg-zinc-900 text-white" : "hover:bg-zinc-300",
+          "mb-2 flex items-center gap-2 rounded-lg bg-zinc-200 p-2 dark:border dark:bg-transparent dark:hover:bg-slate-800",
+          !selectedCategory
+            ? "bg-zinc-900 text-white dark:border-slate-500"
+            : "hover:bg-zinc-300",
         )}
       >
         <div
@@ -45,9 +47,9 @@ export default function Categories({
           key={category.id}
           href={`/blog/cat/${category.slug}`}
           className={cn(
-            "mb-2 flex items-center gap-2 rounded-lg bg-zinc-200 p-2",
+            "mb-2 flex items-center gap-2 rounded-lg bg-zinc-200 p-2 dark:border dark:bg-transparent dark:hover:bg-slate-800",
             selectedCategory?.id === category.id
-              ? "bg-zinc-900 text-white"
+              ? "bg-zinc-900 text-white dark:border-slate-500"
               : "hover:bg-zinc-300",
           )}
         >
