@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type UseServerGetResult<T> = {
   data: T | null;
@@ -10,7 +10,6 @@ export function useServerGet<T>(fn: () => Promise<T>): UseServerGetResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
-
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -37,7 +36,7 @@ export function useServerGet<T>(fn: () => Promise<T>): UseServerGetResult<T> {
     return () => {
       isMounted = false;
     };
-  }, [fn]);
+  }, []);
 
   return { data, loading, error };
 }
