@@ -1,9 +1,11 @@
-import React from "react";
+import { db } from "@/lib/db";
+import BlogPage from "./BlogPage";
 
-export default function Page() {
+export default async function Page() {
+  const posts = await db.post.findMany();
+  const categoris = await db.category.findMany();
+
   return (
-    <div>
-      <h1>Blog page</h1>
-    </div>
+    <BlogPage posts={posts} categoris={categoris} selectedCategory={null} />
   );
 }
