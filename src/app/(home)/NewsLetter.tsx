@@ -34,8 +34,8 @@ export default function NewsLetter() {
               Subscribe to Our Newsletter
             </h2>
             <p className="mx-auto max-w-xs text-sm text-muted-foreground sm:max-w-md sm:text-base md:text-lg lg:text-xl">
-              Stay updated with our latest blog posts and news. We promise not
-              to spam you!
+              Want help in your business journey? Subscribe to get useful tips
+              and resources every week.
             </p>
           </div>
           <div className="w-[30rem]">
