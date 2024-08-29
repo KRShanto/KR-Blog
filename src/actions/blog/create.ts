@@ -52,3 +52,4 @@ export async function createBlog(data: CreateBlogData) {
     message: "Blog created successfully",
   };
 }
+

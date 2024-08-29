@@ -2,15 +2,19 @@
 import { Category } from "@prisma/client";
 import { useState } from "react";
 import AddEditCategory from "./AddEditCategoryModal";
-import DeleteCategoryModal from "./DeleteCategoryModal";
+import DeleteModal from "@/components/DeleteModal";
 import CategoryTable from "./CategoryTable";
 import CategoryHead from "./CategoryHead";
+import { deleteCategory } from "../actions";
+import { useToast } from "@/components/ui/use-toast";
 
 type TProps = {
   categoryItems?: Category[];
 };
 
 export default function CategoryContainer({ categoryItems }: TProps) {
+  const { toast } = useToast();
+
   const [categories, setCategories] = useState<Category[]>(
     categoryItems ? categoryItems : [],
   );
@@ -25,6 +29,24 @@ export default function CategoryContainer({ categoryItems }: TProps) {
 
   const [categoryId, setCategoryId] = useState<number | null>(null);
 
+  const [error, setError] = useState(null);
+
+  const handleDeleteCategory = async (categoryId: number) => {
+    console.log(categoryId);
+    try {
+      await deleteCategory(categoryId);
+      setCategories((prevCategories) =>
+        prevCategories.filter((category) => category.id !== categoryId),
+      );
+      setIsDeleteModalOpen(false);
+    } catch (err: any) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+      });
+      setError(err.message);
+    }
+  };
   return (
     <>
       <CategoryHead setIsAddModalOpen={setIsAddModalOpen} />
@@ -59,11 +81,11 @@ export default function CategoryContainer({ categoryItems }: TProps) {
       )}
 
       {/* Delete Category Modal */}
-      <DeleteCategoryModal
-        categoryId={categoryId!}
+      <DeleteModal
+        onDelete={() => handleDeleteCategory(categoryId!)}
+        title="Category"
         isDeleteModalOpen={isDeleteModalOpen}
         setIsDeleteModalOpen={setIsDeleteModalOpen}
-        setCategories={setCategories}
       />
     </>
   );

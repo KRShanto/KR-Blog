@@ -63,7 +63,6 @@ export const deleteCategory = async (categoryId: number) => {
         id: categoryId,
       },
     });
-    revalidatePath("/admin/category");
     return {
       success: true,
       status: 200,

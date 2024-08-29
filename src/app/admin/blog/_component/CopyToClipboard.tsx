@@ -18,11 +18,15 @@ export default function CopyToClipboard({ copyText }: TProps) {
     }
   };
   return (
-    <Button onClick={handleCopy} variant="outline">
+    <Button
+      onClick={handleCopy}
+      variant="outline"
+      className="h-[40px] w-[40px] p-0"
+    >
       {copies ? (
-        <ClipboardCheck size={24} className="text-green-600" />
+        <ClipboardCheck size={20} className="text-green-600" />
       ) : (
-        <Copy size={24} />
+        <Copy size={20} />
       )}
     </Button>
   );
