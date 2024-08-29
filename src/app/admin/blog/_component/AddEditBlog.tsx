@@ -51,6 +51,7 @@ export default function AddEditBlog({
   categories,
 }: TProps) {
   const { toast } = useToast();
+  const [categoriesItems, setCategoriesItems] = useState(categories)
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   const defaultBlogData =
     fromEdit && blog
@@ -216,7 +217,8 @@ export default function AddEditBlog({
           </div>
           <CategoryItems
             selectedCategoryId={blogData.categoryId!}
-            categories={categories}
+            categories={categoriesItems}
+            setCategories={setCategoriesItems}
             fromEdit={fromEdit}
             setBlogData={setBlogData}
           />
