@@ -38,7 +38,7 @@ export default function NewsLetter() {
               and resources every week.
             </p>
           </div>
-          <div className="w-[30rem]">
+          <div className="w-[20rem] md:w-[30rem]">
             <form className="flex flex-col space-y-2">
               <Input
                 className="p-6 text-base"

@@ -1,48 +1,49 @@
-import { Moon, MountainIcon, SearchIcon, Sun } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
-import React from "react";
-import { Button } from "../ui/button";
 import NavbarThemeSwitch from "./NavbarThemeSwitch";
 import Link from "next/link";
 import { auth } from "@/app/auth";
 import LogoutButton from "./LogoutButton";
-import { SITE_NAME } from "@/lib/consts";
 import Logo from "../Logo";
+import ResponsiveNav from "./ResponsiveNav";
+import SearchBox from "./SearchBox";
+
+const navigationLinks = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "About",
+    href: "/about",
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];
 
 export default async function Navbar() {
   const session = await auth();
-
   return (
-    <header className="flex h-14 items-center border-b px-4 lg:px-6">
-      <Link className="text-4xl" href="/">
+    <header className="sticky top-0 flex h-14 items-center justify-between border-b bg-white px-4 lg:px-6">
+      <Link className="text-2xl md:text-4xl" href="/">
         <Logo />
       </Link>
-
-      <nav className="ml-auto flex gap-4 sm:gap-6">
-        <Link
-          className="text-sm font-medium underline-offset-4 hover:underline"
-          href="/"
-        >
-          Home
-        </Link>
-        <Link
-          className="text-sm font-medium underline-offset-4 hover:underline"
-          href="/about"
-        >
-          About
-        </Link>
-        <Link
-          className="text-sm font-medium underline-offset-4 hover:underline"
-          href="/blog"
-        >
-          Blog
-        </Link>
-        <Link
-          className="text-sm font-medium underline-offset-4 hover:underline"
-          href="/contact"
-        >
-          Contact
-        </Link>
+      <nav className="ml-auto hidden gap-4 sm:gap-6 md:flex">
+        {navigationLinks.map((navLink) => (
+          <Link
+            key={navLink.label}
+            className="text-sm font-medium underline-offset-4 hover:underline"
+            href={navLink.href}
+          >
+            {navLink.label}
+          </Link>
+        ))}
 
         {session && session.user.role === "ADMIN" && (
           <Link
@@ -54,14 +55,7 @@ export default async function Navbar() {
         )}
       </nav>
       <div className="ml-4 flex items-center gap-2">
-        <form className="relative">
-          <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-            placeholder="Search..."
-            type="search"
-          />
-        </form>
+        <SearchBox className="hidden" />
 
         <NavbarThemeSwitch />
 
@@ -75,6 +69,16 @@ export default async function Navbar() {
             Login
           </Link>
         )}
+        <ResponsiveNav navLinks={navigationLinks}>
+          {session && session.user.role === "ADMIN" && (
+            <Link
+              className="text-sm font-medium underline-offset-4 hover:underline"
+              href="/admin/blog"
+            >
+              Admin
+            </Link>
+          )}
+        </ResponsiveNav>
       </div>
     </header>
   );
