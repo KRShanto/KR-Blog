@@ -1,6 +1,8 @@
-'use server'
+"use server";
 
+import { CATEGORY_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 export const deleteCategory = async (categoryId: number) => {
   try {
@@ -9,6 +11,9 @@ export const deleteCategory = async (categoryId: number) => {
         id: categoryId,
       },
     });
+
+    revalidateTag(CATEGORY_TAG);
+
     return {
       success: true,
       status: 200,

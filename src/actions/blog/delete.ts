@@ -1,7 +1,8 @@
 "use server";
 
+import { POST_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteBlog = async (blogId: number) => {
   try {
@@ -10,7 +11,10 @@ export const deleteBlog = async (blogId: number) => {
         id: blogId,
       },
     });
+
     revalidatePath("/admin/blog");
+    revalidateTag(POST_TAG);
+
     return {
       success: true,
       message: "Blog deleted successfully",

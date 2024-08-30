@@ -1,13 +1,14 @@
-import { db } from "@/lib/db";
 import BlogPage from "./BlogPage";
+import { getData } from "@/lib/getData";
+import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
 
 export default async function Page() {
-  const posts = await db.post.findMany({
-    where: {
-      published: true,
-    },
+  const posts = await getData("api/posts", {
+    tag: POST_TAG,
   });
-  const categoris = await db.category.findMany();
+  const categoris = await getData("api/categories", {
+    tag: CATEGORY_TAG,
+  });
 
   return (
     <BlogPage posts={posts} categoris={categoris} selectedCategory={null} />

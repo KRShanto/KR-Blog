@@ -1,7 +1,9 @@
-'use server'
+"use server";
 
+import { CATEGORY_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
 import { Category } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 
 export const addCategory = async (category: Partial<Category>) => {
   try {
@@ -9,6 +11,8 @@ export const addCategory = async (category: Partial<Category>) => {
       data: category as Category,
     });
     if (response) {
+      revalidateTag(CATEGORY_TAG);
+
       return {
         success: true,
         status: 201,

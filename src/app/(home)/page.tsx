@@ -10,22 +10,26 @@ import {
 import NewsLetter from "./NewsLetter";
 import Logo from "@/components/Logo";
 import { Outfit } from "next/font/google";
-import { db } from "@/lib/db";
+import { getData } from "@/lib/getData";
+import { Category, Post } from "@prisma/client";
+import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
 
 const font = Outfit({ subsets: ["latin"] });
 
 export default async function Page() {
-  const featuredPosts = await db.post.findMany({
-    where: { isFeatured: true, published: true },
-    take: 3,
+  const featuredPosts: Post[] = await getData("/api/posts", {
+    query: { featured: true },
+    tag: POST_TAG,
   });
 
-  const posts = await db.post.findMany({
-    where: { isFeatured: false, published: true },
-    take: 6,
+  const posts: Post[] = await getData("/api/posts", {
+    query: { notFeatured: true, limit: 6 },
+    tag: POST_TAG,
   });
 
-  const categories = await db.category.findMany();
+  const categories: Category[] = await getData("/api/categories", {
+    tag: CATEGORY_TAG,
+  });
 
   return (
     <main className="flex-1">

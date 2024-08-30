@@ -1,5 +1,7 @@
-'use server'
+"use server";
+import { POST_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 interface CreateBlogData {
   title: string;
@@ -37,6 +39,8 @@ export async function EditBlog(blogId: number, data: CreateBlogData) {
         slug: data.title.toLowerCase().replace(/ /g, "-"),
       },
     });
+
+    revalidateTag(POST_TAG);
   } catch (error) {
     console.error(error);
 

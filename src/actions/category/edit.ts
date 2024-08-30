@@ -1,7 +1,9 @@
-'use server'
+"use server";
 
+import { CATEGORY_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
 import { Category } from "@prisma/client";
+import { revalidateTag } from "next/cache";
 
 export const editCategory = async (
   categoryId: number,
@@ -14,7 +16,10 @@ export const editCategory = async (
       },
       data: updateCategory as Category,
     });
+
     if (response) {
+      revalidateTag(CATEGORY_TAG);
+
       return {
         success: true,
         status: 200,

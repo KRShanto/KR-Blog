@@ -36,6 +36,7 @@ export function useServerGet<T>(fn: () => Promise<T>): UseServerGetResult<T> {
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { data, loading, error };
