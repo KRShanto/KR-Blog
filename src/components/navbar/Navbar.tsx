@@ -69,7 +69,16 @@ export default async function Navbar() {
             Login
           </Link>
         )}
-        <ResponsiveNav navLinks={navigationLinks} />
+        <ResponsiveNav navLinks={navigationLinks}>
+          {session && session.user.role === "ADMIN" && (
+            <Link
+              className="text-sm font-medium underline-offset-4 hover:underline"
+              href="/admin/blog"
+            >
+              Admin
+            </Link>
+          )}
+        </ResponsiveNav>
       </div>
     </header>
   );

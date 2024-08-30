@@ -6,10 +6,11 @@ import { useState } from "react";
 import SearchBox from "./SearchBox";
 
 type TProps = {
-  navLinks: { label: string; href: string }[];
+    navLinks: { label: string; href: string }[];
+    children: React.ReactNode
 };
 
-export default function ResponsiveNav({ navLinks }: TProps) {
+export default function ResponsiveNav({ navLinks,children }: TProps) {
   const [navOpen, setNavOpen] = useState(false);
   return (
     <>
@@ -33,6 +34,7 @@ export default function ResponsiveNav({ navLinks }: TProps) {
                 </Link>
               </li>
             ))}
+                      { children }
           </ul>
           <div className="p-3">
             <SearchBox className="w-full" />
