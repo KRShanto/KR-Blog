@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Category } from "@prisma/client";
 import { useState } from "react";
 
-import ErrorAlert from "@/components/ErrorAlert";
 import { useToast } from "@/components/ui/use-toast";
 import { addCategory } from "@/actions/category/create";
 import { editCategory } from "@/actions/category/edit";

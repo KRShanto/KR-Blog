@@ -1,22 +1,22 @@
-import Image from "next/image";
 import React from "react";
 import { Post } from "@prisma/client";
 import BlogActions from "./BlogActions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import MyImage from "@/components/MyImage";
 
 type TProps = {
   blog: Partial<Post>;
   role: "ADMIN" | "USER";
 };
 
-export default function BlogCard({ blog, role }: TProps) {
+export default async function BlogCard({ blog, role }: TProps) {
   return (
     <div
       key={blog.id}
       className="overflow-hidden rounded-lg border p-3 shadow-md"
     >
-      <Image
+      <MyImage
         src={blog.image || "/default-image.jpg"}
         alt={blog.imageAlt || "Blog Image"}
         width={300}
