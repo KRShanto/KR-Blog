@@ -4,6 +4,7 @@ import CategoryOpenButton from "./CategoryOpenButton";
 import { Button } from "@/components/ui/button";
 import Categories from "./Categories";
 import { Category, Post } from "@prisma/client";
+import MyImage from "@/components/MyImage";
 
 export default async function BlogPage({
   posts,
@@ -33,7 +34,7 @@ export default async function BlogPage({
                 key={post.id}
                 className="overflow-hidden rounded-lg border p-3 shadow-md"
               >
-                <Image
+                <MyImage
                   src={post.image || "/default-image.jpg"}
                   alt={post.title}
                   width={300}

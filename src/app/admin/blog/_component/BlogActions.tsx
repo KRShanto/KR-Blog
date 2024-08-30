@@ -3,11 +3,11 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import CopyToClipboard from "./CopyToClipboard";
-import { deleteBlog } from "../actions";
 import DeleteModal from "@/components/DeleteModal";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Post } from "@prisma/client";
+import { deleteBlog } from "@/actions/blog/delete";
 
 type TProps = {
   blog: Post;
