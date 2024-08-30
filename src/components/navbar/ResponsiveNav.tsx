@@ -18,7 +18,7 @@ export default function ResponsiveNav({ navLinks, children }: TProps) {
         {navOpen ? <X size={24} /> : <AlignRight size={24} />}
       </button>
       {navOpen && (
-        <div className="absolute left-0 top-10 m-4 w-[90%] rounded-sm bg-white md:hidden">
+        <div className="absolute left-2/4 top-10 m-4 w-80 -translate-x-[55%] rounded-sm bg-white sm:w-96 md:hidden">
           <ul className="space-y-2 p-4">
             {navLinks.map((navLink) => (
               <li
