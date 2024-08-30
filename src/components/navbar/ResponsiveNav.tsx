@@ -6,19 +6,19 @@ import { useState } from "react";
 import SearchBox from "./SearchBox";
 
 type TProps = {
-    navLinks: { label: string; href: string }[];
-    children: React.ReactNode
+  navLinks: { label: string; href: string }[];
+  children: React.ReactNode;
 };
 
-export default function ResponsiveNav({ navLinks,children }: TProps) {
+export default function ResponsiveNav({ navLinks, children }: TProps) {
   const [navOpen, setNavOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setNavOpen((prev) => !prev)}>
+      <button className="md:hidden" onClick={() => setNavOpen((prev) => !prev)}>
         {navOpen ? <X size={24} /> : <AlignRight size={24} />}
       </button>
       {navOpen && (
-        <div className="absolute left-2/4 top-10 m-4 w-80 -translate-x-[55%] rounded-sm bg-white md:hidden">
+        <div className="absolute left-0 top-10 m-4 w-[90%] rounded-sm bg-white md:hidden">
           <ul className="space-y-2 p-4">
             {navLinks.map((navLink) => (
               <li
@@ -34,7 +34,7 @@ export default function ResponsiveNav({ navLinks,children }: TProps) {
                 </Link>
               </li>
             ))}
-                      { children }
+            {children}
           </ul>
           <div className="p-3">
             <SearchBox className="w-full" />
