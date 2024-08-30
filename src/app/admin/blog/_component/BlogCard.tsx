@@ -4,6 +4,7 @@ import BlogActions from "./BlogActions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import MyImage from "@/components/MyImage";
+import { getBlurData } from "@/lib/blur-generator";
 
 type TProps = {
   blog: Partial<Post>;
@@ -11,6 +12,9 @@ type TProps = {
 };
 
 export default async function BlogCard({ blog, role }: TProps) {
+  // TODO: this function throw an "sharp" error
+  // const { base64 } = await getBlurData(blog.image!);
+  // console.log(base64);
   return (
     <div
       key={blog.id}

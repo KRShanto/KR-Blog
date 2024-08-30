@@ -7,9 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import { deleteCategory } from "../app/admin/category/actions";
-import { Category } from "@prisma/client";
 
 type TProps = {
   title: string;

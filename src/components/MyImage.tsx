@@ -35,7 +35,8 @@ export default function MyImage({
           visibility: isLoad ? "hidden" : "visible",
           height: isLoad ? "0px" : `${height}px`,
         }}
-        onLoad={() => setIsLoad(false)}
+        loading="lazy"
+        onLoad={() => setIsLoad(() => false)}
         src={src}
         alt={alt}
         width={width}

@@ -87,58 +87,57 @@ export default function AddEditCategory({
     <>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
-              {fromEdit ? "Edit Category" : "Add New Category"}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label
-                htmlFor="edit-name"
-                className="text-right text-gray-900 dark:text-gray-100"
-              >
-                Name
-              </Label>
-              <Input
-                id="edit-name"
-                required
-                value={newCategory.name}
-                onChange={(e) =>
-                  setNewCategory({ ...newCategory, name: e.target.value })
-                }
-                className="col-span-3"
-              />
+          <form onSubmit={fromEdit ? handleEditCategory : handleAddCategory}>
+            <DialogHeader>
+              <DialogTitle className="text-gray-900 dark:text-gray-100">
+                {fromEdit ? "Edit Category" : "Add New Category"}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label
+                  htmlFor="edit-name"
+                  className="text-right text-gray-900 dark:text-gray-100"
+                >
+                  Name
+                </Label>
+                <Input
+                  id="edit-name"
+                  required
+                  value={newCategory.name}
+                  onChange={(e) =>
+                    setNewCategory({ ...newCategory, name: e.target.value })
+                  }
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label
+                  htmlFor="edit-slug"
+                  className="text-right text-gray-900 dark:text-gray-100"
+                >
+                  Slug
+                </Label>
+                <Input
+                  id="edit-slug"
+                  value={newCategory.slug}
+                  required
+                  onChange={(e) =>
+                    setNewCategory({
+                      ...newCategory,
+                      slug: e.target.value.toLowerCase().replace(/ /g, "-"),
+                    })
+                  }
+                  className="col-span-3"
+                />
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label
-                htmlFor="edit-slug"
-                className="text-right text-gray-900 dark:text-gray-100"
-              >
-                Slug
-              </Label>
-              <Input
-                id="edit-slug"
-                value={newCategory.slug}
-                required
-                onChange={(e) =>
-                  setNewCategory({
-                    ...newCategory,
-                    slug: e.target.value.toLowerCase().replace(/ /g, "-"),
-                  })
-                }
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button
-              type="submit"
-              onClick={fromEdit ? handleEditCategory : handleAddCategory}
-            >
-              {fromEdit ? "Save Changes" : "Add Category"}
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <Button type="submit">
+                {fromEdit ? "Save Changes" : "Add Category"}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </>
