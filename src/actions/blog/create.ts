@@ -1,6 +1,8 @@
 "use server";
 
+import { POST_TAG } from "@/lib/consts";
 import { db } from "@/lib/db";
+import { revalidateTag } from "next/cache";
 
 interface CreateBlogData {
   title: string;
@@ -38,6 +40,8 @@ export async function createBlog(data: CreateBlogData) {
         slug: data.title.toLowerCase().replace(/ /g, "-"),
       },
     });
+
+    revalidateTag(POST_TAG);
   } catch (error) {
     console.error(error);
 
@@ -52,4 +56,3 @@ export async function createBlog(data: CreateBlogData) {
     message: "Blog created successfully",
   };
 }
-

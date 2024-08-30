@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,8 +7,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { db } from "@/lib/db";
+import { POST_TAG } from "@/lib/consts";
+import { getData } from "@/lib/getData";
+import { Post } from "@prisma/client";
 import { Heart, Linkedin, Share2 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
@@ -17,23 +17,28 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const post = await db.post.findUnique({
-    where: {
-      slug: params.slug,
-      published: true,
-    },
+export async function generateStaticParams() {
+  const posts = await getData("api/posts", {
+    tag: POST_TAG,
   });
+
+  return posts.map((post: Post) => ({
+    slug: post.slug,
+  }));
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
+  const post = (await getData("api/posts", {
+    query: { slug: params.slug },
+    tag: POST_TAG,
+  })) as Post;
 
   if (!post) return notFound();
 
-  const relatedPosts = await db.post.findMany({
-    where: {
-      categoryId: post.categoryId,
-      published: true,
-    },
-    take: 2,
-  });
+  const relatedPosts = (await getData("api/posts", {
+    query: { categoryId: post.categoryId, limit: 2 },
+    tag: POST_TAG,
+  })) as Post[];
 
   const isLiked = false; // Temporary value
   const likeCount = 5; // Temporary value
