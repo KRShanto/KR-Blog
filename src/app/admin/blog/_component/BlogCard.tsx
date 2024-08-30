@@ -31,7 +31,7 @@ export default async function BlogCard({ blog, role }: TProps) {
         </Link>
       </div>
 
-      {role === "ADMIN" && <BlogActions blogId={blog.id!} />}
+      {role === "ADMIN" && <BlogActions blog={blog as Post} />}
     </div>
   );
 }

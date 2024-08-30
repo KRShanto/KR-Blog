@@ -1,8 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import bOne from "../../../public/b-one.avif";
-import bTwo from "../../../public/b-two.avif";
-import bThree from "../../../public/b-three.avif";
 import {
   Card,
   CardContent,
@@ -13,10 +10,23 @@ import {
 import NewsLetter from "./NewsLetter";
 import Logo from "@/components/Logo";
 import { Outfit } from "next/font/google";
+import { db } from "@/lib/db";
 
 const font = Outfit({ subsets: ["latin"] });
 
 export default async function Page() {
+  const featuredPosts = await db.post.findMany({
+    where: { isFeatured: true, published: true },
+    take: 3,
+  });
+
+  const posts = await db.post.findMany({
+    where: { isFeatured: false, published: true },
+    take: 6,
+  });
+
+  const categories = await db.category.findMany();
+
   return (
     <main className="flex-1">
       <section className="w-full py-8">
@@ -36,8 +46,8 @@ export default async function Page() {
             <Card className="md:col-span-2 lg:row-span-2">
               <CardHeader>
                 <Image
-                  src={bOne}
-                  alt="Another image"
+                  src={featuredPosts[0].image || "default-image.jpg"}
+                  alt={featuredPosts[0].imageAlt}
                   className="mx-auto w-full rounded-lg object-cover md:mx-0"
                   height={300}
                   width={800}
@@ -45,52 +55,53 @@ export default async function Page() {
               </CardHeader>
               <CardContent>
                 <CardTitle className="text-xl sm:text-2xl">
-                  Top Post Title
+                  {featuredPosts[0].title}
                 </CardTitle>
                 <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-                  This is a brief description of the top post. Its more detailed
-                  than the others to grab attention. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit. Sed do eiusmod tempor incididunt
-                  ut labore et dolore magna aliqua.
+                  {featuredPosts[0].description}
                 </p>
               </CardContent>
               <CardFooter>
                 <Link
                   className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-                  href="#"
+                  href={`/blog/post/${featuredPosts[0].slug}`}
                 >
                   Read More
                 </Link>
               </CardFooter>
             </Card>
-            {[1, 2].map((i) => (
-              <Card key={i} className="flex flex-col">
-                <CardHeader>
-                  <Image
-                    src={bTwo}
-                    alt={`Featured post ${i} image`}
-                    className="mx-auto w-full rounded-lg object-cover md:mx-0"
-                    height={150}
-                    width={300}
-                  />
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardTitle className="text-lg">Featured Post {i}</CardTitle>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    A brief description of the featured post. This is a shorter
-                    summary to fit the smaller card size.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Link
-                    className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    href="#"
-                  >
-                    Read More
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
+            {[1, 2].map(
+              (i) =>
+                featuredPosts[i] && (
+                  <Card key={i} className="flex flex-col">
+                    <CardHeader>
+                      <Image
+                        src={featuredPosts[i].image || "default-image.jpg"}
+                        alt={featuredPosts[i].imageAlt}
+                        className="mx-auto w-full rounded-lg object-cover md:mx-0"
+                        height={150}
+                        width={300}
+                      />
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <CardTitle className="text-lg">
+                        {featuredPosts[i].title}
+                      </CardTitle>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {featuredPosts[i].description}
+                      </p>
+                    </CardContent>
+                    <CardFooter>
+                      <Link
+                        className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                        href={`/blog/post/${featuredPosts[i].slug}`}
+                      >
+                        Read More
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                ),
+            )}
           </div>
         </div>
       </section>
@@ -100,22 +111,13 @@ export default async function Page() {
             Categories
           </h2>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-            {[
-              "Technology",
-              "Travel",
-              "Food",
-              "Lifestyle",
-              "Fashion",
-              "Health",
-              "Business",
-              "Education",
-            ].map((category) => (
+            {categories.map((category) => (
               <Link
-                key={category}
+                key={category.id}
                 className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-                href="#"
+                href={`/blog/cat/${category.slug}`}
               >
-                {category}
+                {category.name}
               </Link>
             ))}
           </div>
@@ -127,28 +129,27 @@ export default async function Page() {
             More Posts
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+            {posts.map((post, i) => (
               <Card key={i}>
                 <CardHeader>
                   <Image
-                    src={bThree}
-                    alt={`Blog post ${i} image`}
+                    src={post.image || "default-image.jpg"}
+                    alt={post.imageAlt}
                     className="mx-auto w-full rounded-lg object-cover md:mx-0"
                     height={200}
                     width={400}
                   />
                 </CardHeader>
                 <CardContent>
-                  <CardTitle>Blog Post Title {i}</CardTitle>
+                  <CardTitle>{post.title}</CardTitle>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    This is a brief description of the blog post. It gives
-                    readers an idea of what to expect.
+                    {post.description}
                   </p>
                 </CardContent>
                 <CardFooter>
                   <Link
                     className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-                    href="#"
+                    href={`/blog/post/${post.slug}`}
                   >
                     Read More
                   </Link>

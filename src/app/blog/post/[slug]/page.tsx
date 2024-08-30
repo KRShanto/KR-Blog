@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,74 +9,54 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Facebook,
-  Heart,
-  Linkedin,
-  MessageCircle,
-  Share2,
-  Twitter,
-} from "lucide-react";
+import { db } from "@/lib/db";
+import { Heart, Linkedin, Share2 } from "lucide-react";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { notFound } from "next/navigation";
+import { FaFacebook, FaTwitter } from "react-icons/fa";
 
-export default function Component() {
-  const [likeCount, setLikeCount] = useState(42);
-  const [isLiked, setIsLiked] = useState(false);
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: "Jane Smith",
-      date: "March 16, 2024",
-      content:
-        "Great article! I'm particularly excited about the potential of Web Assembly. Can't wait to see how it transforms web development in the coming years.",
+export default async function Page({ params }: { params: { slug: string } }) {
+  const post = await db.post.findUnique({
+    where: {
+      slug: params.slug,
+      published: true,
     },
-  ]);
-  const [newComment, setNewComment] = useState("");
+  });
 
-  const handleLike = () => {
-    if (isLiked) {
-      setLikeCount(likeCount - 1);
-    } else {
-      setLikeCount(likeCount + 1);
-    }
-    setIsLiked(!isLiked);
-  };
+  if (!post) return notFound();
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      const comment = {
-        id: comments.length + 1,
-        author: "Current User", // In a real app, this would be the logged-in user's name
-        date: new Date().toLocaleDateString(),
-        content: newComment.trim(),
-      };
-      setComments([...comments, comment]);
-      setNewComment("");
-    }
-  };
+  const relatedPosts = await db.post.findMany({
+    where: {
+      categoryId: post.categoryId,
+      published: true,
+    },
+    take: 2,
+  });
+
+  const isLiked = false; // Temporary value
+  const likeCount = 5; // Temporary value
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <article className="prose lg:prose-xl dark:prose-invert mx-auto">
+    <div className="mx-auto max-w-5xl px-4 py-8">
+      <article className="mx-auto">
         <h1 className="mb-8 text-4xl font-bold text-gray-900 dark:text-gray-100">
-          The Future of Web Development: Trends to Watch in 2024
+          {post.title}
         </h1>
         <Image
-          src="/image.jpg"
-          alt="Featured image"
-          width={800}
-          height={400}
+          src={post.image || "/default-image.jpg"}
+          alt={post.imageAlt || "Post Image"}
+          width={500}
+          height={300}
           className="mb-6 w-full rounded-lg"
         />
         <div className="mb-8 flex items-center justify-between">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Published on March 15, 2024
+            Published on {moment(post.createdAt).format("MMMM D, YYYY")} by{" "}
           </p>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="icon" onClick={handleLike}>
+            <Button variant="outline" size="icon">
               <Heart
                 className={`h-4 w-4 ${isLiked ? "fill-current text-red-500" : ""}`}
               />
@@ -87,10 +65,10 @@ export default function Component() {
               {likeCount} likes
             </span>
             <Button variant="outline" size="icon">
-              <Facebook className="h-4 w-4 text-gray-900 dark:text-gray-100" />
+              <FaFacebook className="h-4 w-4 text-gray-900 dark:text-gray-100" />
             </Button>
             <Button variant="outline" size="icon">
-              <Twitter className="h-4 w-4 text-gray-900 dark:text-gray-100" />
+              <FaTwitter className="h-4 w-4 text-gray-900 dark:text-gray-100" />
             </Button>
             <Button variant="outline" size="icon">
               <Linkedin className="h-4 w-4 text-gray-900 dark:text-gray-100" />
@@ -100,32 +78,10 @@ export default function Component() {
             </Button>
           </div>
         </div>
-        <p className="mb-8 text-sm text-gray-700 dark:text-gray-400 sm:text-base md:text-lg">
-          As we move further into 2024, the landscape of web development
-          continues to evolve at a rapid pace. From new frameworks to innovative
-          design paradigms, developers are constantly adapting to meet the
-          demands of modern web applications. In this post, we'll explore some
-          of the most exciting trends that are shaping the future of web
-          development.
-        </p>
-        <h2 className="mb-6 text-lg font-bold text-gray-900 dark:text-gray-100 sm:text-xl md:text-2xl">
-          1. The Rise of AI-Assisted Development
-        </h2>
-        <p className="mb-8 text-sm text-gray-700 dark:text-gray-400 sm:text-base md:text-lg">
-          Artificial Intelligence is no longer just a buzzword in web
-          development. It's becoming an integral part of the development
-          process, from code generation to bug detection and even UX design
-          suggestions.
-        </p>
-        <h2 className="mb-6 text-lg font-bold text-gray-900 dark:text-gray-100 sm:text-xl md:text-2xl">
-          2. Web Assembly and the Future of Browser-Based Applications
-        </h2>
-        <p className="mb-8 text-sm text-gray-700 dark:text-gray-400 sm:text-base md:text-lg">
-          Web Assembly (Wasm) is gaining traction, allowing developers to run
-          high-performance applications in the browser. This technology is
-          opening up new possibilities for complex web applications that were
-          previously only possible in native environments.
-        </p>
+        <div
+          className="prose dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
       </article>
 
       <Separator className="my-10" />
@@ -134,13 +90,13 @@ export default function Component() {
         <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
           Related Posts
         </h2>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i}>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {relatedPosts.map((post, index) => (
+            <Card key={index}>
               <CardHeader>
                 <Image
-                  src={`/image.jpg`}
-                  alt={`Related Post ${i}`}
+                  src={post.image || "/default-image.jpg"}
+                  alt={post.imageAlt || "Post Image"}
                   width={400}
                   height={200}
                   className="h-48 w-full rounded-t-lg object-cover"
@@ -148,15 +104,15 @@ export default function Component() {
               </CardHeader>
               <CardContent>
                 <CardTitle className="mb-2 text-gray-900 dark:text-gray-100">
-                  Related Post {i}
+                  {post.title}
                 </CardTitle>
                 <p className="text-gray-600 dark:text-gray-400">
-                  A brief preview of another interesting article...
+                  {post.description}
                 </p>
               </CardContent>
               <CardFooter>
                 <Button asChild>
-                  <Link href={`#related-post-${i}`}>Read more</Link>
+                  <Link href={`/blog/post/${post.slug}`}>Read more</Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -164,7 +120,8 @@ export default function Component() {
         </div>
       </section>
 
-      <section className="mb-10">
+      {/* TODO */}
+      {/* <section className="mb-10">
         <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
           Comments
         </h2>
@@ -216,7 +173,7 @@ export default function Component() {
           />
           <Button type="submit">Post Comment</Button>
         </form>
-      </section>
+      </section> */}
     </div>
   );
 }

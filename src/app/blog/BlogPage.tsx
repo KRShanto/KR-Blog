@@ -44,7 +44,7 @@ export default async function BlogPage({
                 <div className="p-6">
                   <h2 className="mb-2 text-xl font-semibold">{post.title}</h2>
                   <p className="mb-4 text-gray-600">{post.description}</p>
-                  <Link href={`/blog/${post.slug}`}>
+                  <Link href={`/blog/post/${post.slug}`}>
                     <Button>Read more</Button>
                   </Link>
                 </div>
