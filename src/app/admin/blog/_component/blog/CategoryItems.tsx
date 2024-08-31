@@ -50,7 +50,7 @@ export default function CategoryItems({
           <Label htmlFor="category">Category</Label>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="h-4 space-x-1"
+            className="h-7 space-x-1"
             variant="outline"
           >
             <span>Add New</span>
