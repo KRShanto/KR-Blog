@@ -7,6 +7,9 @@ import LogoutButton from "./LogoutButton";
 import Logo from "../Logo";
 import ResponsiveNav from "./ResponsiveNav";
 import SearchBox from "./SearchBox";
+import AdminLink from "./AdminLink";
+import AuthButton from "./AuthButton";
+import { Suspense } from "react";
 
 const navigationLinks = [
   {
@@ -27,8 +30,7 @@ const navigationLinks = [
   },
 ];
 
-export default async function Navbar() {
-  const session = await auth();
+export default function Navbar() {
   return (
     <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6">
       <Link className="text-2xl md:text-4xl" href="/">
@@ -45,21 +47,25 @@ export default async function Navbar() {
           </Link>
         ))}
 
-        {session && session.user.role === "ADMIN" && (
+        {/* {session && session.user.role === "ADMIN" && (
           <Link
             className="text-sm font-medium underline-offset-4 hover:underline"
             href="/admin/blog"
           >
             Admin
           </Link>
-        )}
+        )} */}
+
+        <Suspense>
+          <AdminLink />
+        </Suspense>
       </nav>
       <div className="ml-4 flex items-center gap-2">
         <SearchBox className="hidden" />
 
         <NavbarThemeSwitch />
 
-        {session ? (
+        {/* {session ? (
           <LogoutButton />
         ) : (
           <Link
@@ -68,16 +74,25 @@ export default async function Navbar() {
           >
             Login
           </Link>
-        )}
+        )} */}
+
+        <Suspense>
+          <AuthButton />
+        </Suspense>
+
         <ResponsiveNav navLinks={navigationLinks}>
-          {session && session.user.role === "ADMIN" && (
+          {/* {session && session.user.role === "ADMIN" && (
             <Link
               className="text-sm font-medium underline-offset-4 hover:underline"
               href="/admin/blog"
             >
               Admin
             </Link>
-          )}
+          )} */}
+
+          <Suspense>
+            <AdminLink />
+          </Suspense>
         </ResponsiveNav>
       </div>
     </header>
