@@ -30,9 +30,11 @@ export default async function BlogCard({ blog, role }: TProps) {
       <div className="p-6">
         <h2 className="mb-2 text-xl font-semibold">{blog.title}</h2>
         <p className="mb-4 text-gray-600">{blog.description}</p>
-        <Link href={`/blog/${blog.slug}`}>
-          <Button>Read more</Button>
-        </Link>
+        {blog.published && (
+          <Link href={`/blog/post/${blog.slug}`}>
+            <Button>Read more</Button>
+          </Link>
+        )}
       </div>
 
       {role === "ADMIN" && <BlogActions blog={blog as Post} />}

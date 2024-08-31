@@ -3,7 +3,13 @@ interface Options {
   tag?: string;
 }
 
-export async function getData(path: string, options?: Options) {
+export async function getData<T>(
+  path: string,
+  options?: Options,
+): Promise<{
+  data: T;
+  status: number;
+}> {
   const API_URL = process.env.NEXT_PUBLIC_APP_URL;
 
   // check if the path doesn't start with a slash and add it if it doesn't
@@ -27,5 +33,5 @@ export async function getData(path: string, options?: Options) {
   });
   const data = await res.json();
 
-  return data;
+  return { data, status: res.status };
 }

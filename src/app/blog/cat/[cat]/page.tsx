@@ -4,27 +4,31 @@ import { getData } from "@/lib/getData";
 import { Category, Post } from "@prisma/client";
 
 export async function generateStaticParams() {
-  const categories: Category[] = await getData("api/categories");
+  const categories = await getData<Category[]>("api/categories");
 
-  return categories.map((cat) => ({
+  return categories.data.map((cat) => ({
     cat: cat.slug,
   }));
 }
 
 export default async function Page({ params }: { params: { cat: string } }) {
-  const posts: Post[] = await getData("api/posts", {
+  const decodedSlug = decodeURIComponent(params.cat);
+
+  const posts = await getData<Post[]>("api/posts", {
     query: {
-      category: params.cat,
+      category: decodedSlug,
     },
   });
 
-  const categories: Category[] = await getData("api/categories");
-  const selectedCategory = categories.find((cat) => cat.slug === params.cat);
+  const categories = await getData<Category[]>("api/categories");
+  const selectedCategory = categories.data.find(
+    (cat) => cat.slug === params.cat,
+  );
 
   return (
     <BlogPage
-      posts={posts}
-      categoris={categories}
+      posts={posts.data}
+      categoris={categories.data}
       selectedCategory={selectedCategory!}
     />
   );

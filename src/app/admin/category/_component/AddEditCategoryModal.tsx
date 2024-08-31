@@ -39,7 +39,9 @@ export default function AddEditCategory({
   );
 
   // edit category handler
-  const handleEditCategory = async () => {
+  const handleEditCategory = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       if (fromEdit && category) {
         const response = await editCategory(category?.id, newCategory);
@@ -63,7 +65,9 @@ export default function AddEditCategory({
   };
 
   // add category handler
-  const handleAddCategory = async () => {
+  const handleAddCategory = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       if (!newCategory.name || !newCategory.slug) {
         setError("Name and slug are required");

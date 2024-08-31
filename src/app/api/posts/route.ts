@@ -13,10 +13,11 @@ export async function GET(req: NextRequest) {
   const categoryId = search.get("categoryId");
   const category = search.get("category");
   const notFeatured = search.get("notFeatured");
+  const not = search.get("not") || undefined;
 
   if (slug) {
     const post = await db.post.findUnique({
-      where: { slug, published: true },
+      where: { slug, published: true, NOT: { slug: not } },
     });
 
     if (!post) {
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest) {
 
   if (featured) {
     const posts = await db.post.findMany({
-      where: { isFeatured: true, published: true },
+      where: { isFeatured: true, published: true, NOT: { slug: not } },
       take: 3,
     });
 
@@ -41,6 +42,7 @@ export async function GET(req: NextRequest) {
         published: true,
         categoryId: categoryId ? parseInt(categoryId) : undefined,
         category: category ? { slug: category } : undefined,
+        NOT: { slug: not },
       },
       take: limit ? parseInt(limit) : undefined,
     });
@@ -49,7 +51,11 @@ export async function GET(req: NextRequest) {
   }
 
   const posts = await db.post.findMany({
-    where: { published: true, isFeatured: notFeatured ? false : true },
+    where: {
+      published: true,
+      isFeatured: notFeatured ? false : true,
+      NOT: { slug: not },
+    },
     take: limit ? parseInt(limit) : undefined,
   });
 

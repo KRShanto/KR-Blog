@@ -18,47 +18,52 @@ import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
 
 export async function generateStaticParams() {
-  const posts = await getData("api/posts", {
+  const posts = await getData<Post[]>("api/posts", {
     tag: POST_TAG,
   });
 
-  return posts.map((post: Post) => ({
+  return posts.data.map((post: Post) => ({
     slug: post.slug,
   }));
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const post = (await getData("api/posts", {
-    query: { slug: params.slug },
-    tag: POST_TAG,
-  })) as Post;
+  const decodedSlug = decodeURIComponent(params.slug);
 
-  if (!post) return notFound();
-
-  const relatedPosts = (await getData("api/posts", {
-    query: { categoryId: post.categoryId, limit: 2 },
+  const post = await getData<Post>("api/posts", {
+    query: { slug: decodedSlug },
     tag: POST_TAG,
-  })) as Post[];
+  });
+
+  if (post.status === 404) return notFound();
+
+  const relatedPosts = await getData<Post[]>("api/posts", {
+    query: { categoryId: post.data.categoryId, limit: 2, not: post.data.slug },
+    tag: POST_TAG,
+  });
 
   const isLiked = false; // Temporary value
   const likeCount = 5; // Temporary value
+
+  console.log("slug: ", decodedSlug);
+  console.log("Post: ", post);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <article className="mx-auto">
         <h1 className="mb-8 text-4xl font-bold text-gray-900 dark:text-gray-100">
-          {post.title}
+          {post.data.title}
         </h1>
         <Image
-          src={post.image || "/default-image.jpg"}
-          alt={post.imageAlt || "Post Image"}
+          src={post.data.image || "/default-image.jpg"}
+          alt={post.data.imageAlt || "Post Image"}
           width={500}
           height={300}
           className="mb-6 w-full rounded-lg"
         />
         <div className="mb-8 flex items-center justify-between">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Published on {moment(post.createdAt).format("MMMM D, YYYY")} by{" "}
+            Published on {moment(post.data.createdAt).format("MMMM D, YYYY")} by{" "}
           </p>
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="icon">
@@ -84,8 +89,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </div>
         </div>
         <div
-          className="prose dark:prose-invert"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          className="prose w-full max-w-none dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: post.data.content }}
         />
       </article>
 
@@ -96,7 +101,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           Related Posts
         </h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {relatedPosts.map((post, index) => (
+          {relatedPosts.data.map((post, index) => (
             <Card key={index}>
               <CardHeader>
                 <Image
