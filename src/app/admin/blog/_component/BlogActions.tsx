@@ -39,7 +39,7 @@ export default function BlogActions({ blog }: TProps) {
             variant: "outline",
             className: "h-[40px] w-[40px]",
           })}
-          href={`/blog/post/${blog.id}`}
+          href={`/blog/post/${blog.slug}`}
           style={{ padding: "0px" }}
         >
           <Eye size={20} />

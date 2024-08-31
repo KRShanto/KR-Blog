@@ -30,7 +30,7 @@ const navigationLinks = [
 export default async function Navbar() {
   const session = await auth();
   return (
-    <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 lg:px-6">
+    <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6">
       <Link className="text-2xl md:text-4xl" href="/">
         <Logo />
       </Link>

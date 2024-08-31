@@ -17,17 +17,17 @@ import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
 const font = Outfit({ subsets: ["latin"] });
 
 export default async function Page() {
-  const featuredPosts: Post[] = await getData("/api/posts", {
+  const featuredPosts = await getData<Post[]>("/api/posts", {
     query: { featured: true },
     tag: POST_TAG,
   });
 
-  const posts: Post[] = await getData("/api/posts", {
+  const posts = await getData<Post[]>("/api/posts", {
     query: { notFeatured: true, limit: 6 },
     tag: POST_TAG,
   });
 
-  const categories: Category[] = await getData("/api/categories", {
+  const categories = await getData<Category[]>("/api/categories", {
     tag: CATEGORY_TAG,
   });
 
@@ -47,65 +47,63 @@ export default async function Page() {
           </p>
 
           <div className="mt-3 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="md:col-span-2 lg:row-span-2">
-              <CardHeader>
-                <Image
-                  src={featuredPosts[0].image || "default-image.jpg"}
-                  alt={featuredPosts[0].imageAlt}
-                  className="mx-auto w-full rounded-lg object-cover md:mx-0"
-                  height={300}
-                  width={800}
-                />
-              </CardHeader>
-              <CardContent>
-                <CardTitle className="text-xl sm:text-2xl">
-                  {featuredPosts[0].title}
-                </CardTitle>
-                <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-                  {featuredPosts[0].description}
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Link
-                  className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-                  href={`/blog/post/${featuredPosts[0].slug}`}
-                >
-                  Read More
-                </Link>
-              </CardFooter>
-            </Card>
-            {[1, 2].map(
-              (i) =>
-                featuredPosts[i] && (
-                  <Card key={i} className="flex flex-col">
-                    <CardHeader>
-                      <Image
-                        src={featuredPosts[i].image || "default-image.jpg"}
-                        alt={featuredPosts[i].imageAlt}
-                        className="mx-auto w-full rounded-lg object-cover md:mx-0"
-                        height={150}
-                        width={300}
-                      />
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <CardTitle className="text-lg">
-                        {featuredPosts[i].title}
-                      </CardTitle>
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        {featuredPosts[i].description}
-                      </p>
-                    </CardContent>
-                    <CardFooter>
-                      <Link
-                        className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                        href={`/blog/post/${featuredPosts[i].slug}`}
-                      >
-                        Read More
-                      </Link>
-                    </CardFooter>
-                  </Card>
-                ),
+            {featuredPosts.data.length > 0 && (
+              <Card className="md:col-span-2 lg:row-span-2">
+                <CardHeader>
+                  <Image
+                    src={featuredPosts.data[0].image || "default-image.jpg"}
+                    alt={featuredPosts.data[0].imageAlt}
+                    className="mx-auto w-full rounded-lg object-cover md:mx-0"
+                    height={300}
+                    width={800}
+                  />
+                </CardHeader>
+                <CardContent>
+                  <CardTitle className="text-xl sm:text-2xl">
+                    {featuredPosts.data[0].title}
+                  </CardTitle>
+                  <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                    {featuredPosts.data[0].description}
+                  </p>
+                </CardContent>
+                <CardFooter>
+                  <Link
+                    className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
+                    href={`/blog/post/${featuredPosts.data[0].slug}`}
+                  >
+                    Read More
+                  </Link>
+                </CardFooter>
+              </Card>
             )}
+            {featuredPosts.data.length > 1 &&
+              featuredPosts.data.slice(1).map((post, i) => (
+                <Card key={i} className="flex flex-col">
+                  <CardHeader>
+                    <Image
+                      src={post.image || "default-image.jpg"}
+                      alt={post.imageAlt}
+                      className="mx-auto w-full rounded-lg object-cover md:mx-0"
+                      height={150}
+                      width={300}
+                    />
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <CardTitle className="text-lg">{post.title}</CardTitle>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {post.description}
+                    </p>
+                  </CardContent>
+                  <CardFooter>
+                    <Link
+                      className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      href={`/blog/post/${post.slug}`}
+                    >
+                      Read More
+                    </Link>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
         </div>
       </section>
@@ -115,7 +113,7 @@ export default async function Page() {
             Categories
           </h2>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-            {categories.map((category) => (
+            {categories.data.map((category) => (
               <Link
                 key={category.id}
                 className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
@@ -133,7 +131,7 @@ export default async function Page() {
             More Posts
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-            {posts.map((post, i) => (
+            {posts.data.map((post, i) => (
               <Card key={i}>
                 <CardHeader>
                   <Image
