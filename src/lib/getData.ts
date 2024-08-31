@@ -28,10 +28,9 @@ export async function getData<T>(
   const res = await fetch(url.toString(), {
     cache: "force-cache",
     next: {
-      tags: options?.tag ? [options.tag] : [],
+      tags: options?.tag ? [options.tag] : []
     },
-  });
+  })
   const data = await res.json();
-
   return { data, status: res.status };
 }

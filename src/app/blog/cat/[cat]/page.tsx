@@ -5,7 +5,6 @@ import { Category, Post } from "@prisma/client";
 
 export async function generateStaticParams() {
   const categories = await getData<Category[]>("api/categories");
-
   return categories.data.map((cat) => ({
     cat: cat.slug,
   }));
@@ -13,7 +12,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { cat: string } }) {
   const decodedSlug = decodeURIComponent(params.cat);
-
   const posts = await getData<Post[]>("api/posts", {
     query: {
       category: decodedSlug,
