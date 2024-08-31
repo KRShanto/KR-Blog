@@ -39,7 +39,7 @@ export async function EditBlog(blogId: number, data: CreateBlogData) {
         slug: data.title.toLowerCase().replace(/ /g, "-"),
       },
     });
-
+    
     revalidateTag(POST_TAG);
   } catch (error) {
     console.error(error);

@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteUser(id: number) {
   const session = await auth();
-
+  
   if (session?.user?.id === id) {
     return { type: "error", message: "You cannot delete yourself" };
   }

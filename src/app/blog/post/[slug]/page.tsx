@@ -45,8 +45,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const isLiked = false; // Temporary value
   const likeCount = 5; // Temporary value
 
-  console.log("slug: ", decodedSlug);
-  console.log("Post: ", post);
+  // console.log("slug: ", decodedSlug);
+  // console.log("Post: ", post);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
