@@ -1,5 +1,3 @@
-import { auth } from "@/app/auth";
-import { AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,17 +8,14 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { POST_TAG } from "@/lib/consts";
-import { db } from "@/lib/db";
 import { getData } from "@/lib/getData";
 import { Post } from "@prisma/client";
-import { Avatar } from "@radix-ui/react-avatar";
-import { Heart, Linkedin, MessageCircle, Share2 } from "lucide-react";
+import { Heart, Linkedin, Share2 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
-import Comments from "../../Comments";
 
 export async function generateStaticParams() {
   const posts = await getData<Post[]>("/api/posts", {

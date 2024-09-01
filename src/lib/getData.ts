@@ -1,11 +1,11 @@
 interface Options {
   query?: any;
-  tag?: string;
+  tag: string;
 }
 
 export async function getData<T>(
   path: string,
-  options?: Options,
+  options: Options,
 ): Promise<{
   data: T;
   status: number;
@@ -28,9 +28,9 @@ export async function getData<T>(
   const res = await fetch(url.toString(), {
     cache: "force-cache",
     next: {
-      tags: options?.tag ? [options.tag] : []
+      tags: [options.tag],
     },
-  })
+  });
   const data = await res.json();
   return { data, status: res.status };
 }
