@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { MessageCircle } from "lucide-react";
+import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 
 import React, { useState } from "react";
@@ -11,21 +13,22 @@ type TProps = {
   parentCommentId: number;
   postId: number;
   setIsReply: React.Dispatch<React.SetStateAction<boolean>>;
+  user: User;
 };
 export default function ReplyCommentBox({
   postId,
   parentCommentId,
   setIsReply,
+  user,
 }: TProps) {
   const [replyCommentText, setReplyCommentText] = useState("");
   const { toast } = useToast();
-  const { data: session } = useSession();
+
   const handleReplyComment = async () => {
     try {
       const response = await addComment({
         content: replyCommentText,
         postId,
-        authorId: session?.user.id!,
         parentCommentId: parentCommentId,
       });
       if (response.status === 201) {
@@ -39,21 +42,22 @@ export default function ReplyCommentBox({
       });
     }
   };
+
   return (
     <div className="mt-4 border-t pt-4">
       <div className="flex items-start gap-4">
         <Avatar>
           <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
           <AvatarFallback>
-            {session?.user.name
-              .split(" ")
+            {user.name
+              ?.split(" ")
               .map((n) => n[0])
               .join("")}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1">
           <div className="flex items-center justify-between">
-            <div className="font-medium">{session?.user.name}</div>
+            <div className="font-medium">{user.name}</div>
             <div className="text-xs text-muted-foreground">Just now</div>
           </div>
           <Textarea

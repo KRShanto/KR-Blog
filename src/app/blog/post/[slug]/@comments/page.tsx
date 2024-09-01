@@ -1,3 +1,4 @@
+import { auth } from "@/app/auth";
 import Comments from "./Comments";
 import { db } from "@/lib/db";
 import React from "react";
@@ -21,5 +22,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
       },
     },
   });
-  return <Comments comments={comments} postId={post.id} />;
+
+  const session = await auth();
+
+  return <Comments comments={comments} postId={post.id} session={session} />;
 }

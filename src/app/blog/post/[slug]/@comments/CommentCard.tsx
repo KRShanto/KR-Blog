@@ -12,15 +12,17 @@ import ReplyCommentBox from "./ReplyCommentBox";
 import { Button } from "@/components/ui/button";
 import { MessageCircle } from "lucide-react";
 import { Comment, User } from "@prisma/client";
+import { User as AuthUser } from "next-auth";
 
 type TProps = {
   comment: Comment & { replies: (Comment & { author: User })[] } & {
     author: User;
   };
   postId: number;
+  user?: AuthUser;
 };
 
-export default function CommentCard({ comment, postId }: TProps) {
+export default function CommentCard({ user, comment, postId }: TProps) {
   const [isReply, setIsReply] = useState(false);
   return (
     <Card key={comment.id} className="mb-6">
@@ -61,12 +63,13 @@ export default function CommentCard({ comment, postId }: TProps) {
               parentCommentId={comment.id}
               postId={postId}
               setIsReply={setIsReply}
+              user={user!}
             />
           </div>
         )}
       </CardContent>
       <CardFooter>
-        {!isReply && (
+        {!isReply && user && (
           <Button onClick={() => setIsReply(true)} variant="ghost" size="sm">
             <MessageCircle className="mr-2 h-4 w-4" />
             Reply

@@ -30,32 +30,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || ""),
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-            enableSystem
-          >
-            <NextTopLoader showSpinner={false} />
-            <Navbar />
-            <div className="flex min-h-screen flex-col bg-background text-foreground">
-              {children}
-            </div>
-            <Toaster />
-            <Footer />
-          </ThemeProvider>
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          disableTransitionOnChange
+          enableSystem
+        >
+          <NextTopLoader showSpinner={false} />
+          <Navbar />
+          <div className="flex min-h-screen flex-col bg-background text-foreground">
+            {children}
+          </div>
+          <Toaster />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

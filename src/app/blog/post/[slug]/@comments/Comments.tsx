@@ -15,6 +15,7 @@ import ReplyCommentBox from "./ReplyCommentBox";
 import { useState } from "react";
 import ReplyComment from "./ReplyComment";
 import CommentCard from "./CommentCard";
+import { Session } from "next-auth";
 
 type TProps = {
   postId: number;
@@ -22,17 +23,31 @@ type TProps = {
     author: User;
     replies: (Comment & { author: User })[];
   })[];
+  session: Session | null;
 };
-export default function Comments({ comments, postId }: TProps) {
+export default function Comments({ session, comments, postId }: TProps) {
   return (
     <section className="mb-10">
       <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
         Comments
       </h2>
       {comments.map((comment) => (
-        <CommentCard key={comment.id} comment={comment} postId={postId} />
+        <CommentCard
+          key={comment.id}
+          comment={comment}
+          postId={postId}
+          user={session?.user as any}
+        />
       ))}
-      <CommentBox postId={postId} />
+
+      {session ? (
+        <CommentBox postId={postId} />
+      ) : (
+        <p className="text-center text-lg font-medium">
+          <MessageCircle className="mr-2 inline" />
+          You need to be logged in to comment
+        </p>
+      )}
     </section>
   );
 }
