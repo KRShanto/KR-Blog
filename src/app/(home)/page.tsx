@@ -14,6 +14,12 @@ import { getData } from "@/lib/getData";
 import { Category, Post } from "@prisma/client";
 import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Welcome to your ultimate source to supercharge your business.",
+};
 
 const font = Outfit({ subsets: ["latin"] });
 
@@ -139,7 +145,7 @@ export default async function Page() {
           <h2 className="mb-6 text-center text-2xl font-bold tracking-tighter sm:mb-8 sm:text-4xl md:text-5xl">
             Explore Categories
           </h2>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+          <div className="flex flex-wrap items-center justify-center gap-5">
             {categories.data.map((category, index) => {
               // select random color
               const color = shuffledColors[index % shuffledColors.length];
@@ -147,7 +153,7 @@ export default async function Page() {
               return (
                 <Link
                   key={category.id}
-                  className="flex items-center justify-center gap-2 text-nowrap rounded-md border p-5 text-lg font-medium transition-transform duration-300 ease-in-out hover:scale-105"
+                  className="flex min-w-[15rem] items-center justify-center gap-2 text-nowrap rounded-md border p-5 text-lg font-medium transition-transform duration-300 ease-in-out hover:scale-105"
                   href={`/blog/cat/${category.slug}`}
                   style={{
                     backgroundColor: color[0],
@@ -185,7 +191,7 @@ export default async function Page() {
                   />
                 </CardHeader>
                 <CardContent>
-                  <CardTitle>{post.title}</CardTitle>
+                  <CardTitle className="text-lg">{post.title}</CardTitle>
                   <p className="mt-2 text-sm text-muted-foreground">
                     {post.description}
                   </p>
