@@ -32,8 +32,8 @@ const navigationLinks = [
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6">
-      <Link className="text-2xl md:text-4xl" href="/">
+    <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6 z-50">
+      <Link className="text-2xl min-w-[100px] lg:text-4xl" href="/">
         <Logo />
       </Link>
       <nav className="ml-auto hidden gap-4 sm:gap-6 md:flex">

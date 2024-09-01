@@ -17,7 +17,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   theme: {
     colorScheme: "light",
   },
-
   providers: [
     Credentials({
       name: "KR Blog",

@@ -50,6 +50,7 @@ export default function AddEditBlog({
   blog,
   categories,
 }: TProps) {
+  console.log({blog});
   const { toast } = useToast();
   const [categoriesItems, setCategoriesItems] = useState(categories)
   const [isWarningOpen, setIsWarningOpen] = useState(false);

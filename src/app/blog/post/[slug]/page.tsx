@@ -1,3 +1,5 @@
+import { auth } from "@/app/auth";
+import { AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,45 +10,50 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { POST_TAG } from "@/lib/consts";
+import { db } from "@/lib/db";
 import { getData } from "@/lib/getData";
 import { Post } from "@prisma/client";
-import { Heart, Linkedin, Share2 } from "lucide-react";
+import { Avatar } from "@radix-ui/react-avatar";
+import { Heart, Linkedin, MessageCircle, Share2 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
+import Comments from "../../Comments";
 
 export async function generateStaticParams() {
-  const posts = await getData<Post[]>("api/posts", {
+  const posts = await getData<Post[]>("/api/posts", {
     tag: POST_TAG,
   });
-
   return posts.data.map((post: Post) => ({
     slug: post.slug,
   }));
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  const session = await auth();
   const decodedSlug = decodeURIComponent(params.slug);
-
-  const post = await getData<Post>("api/posts", {
+  const post = await getData<Post>("/api/posts", {
     query: { slug: decodedSlug },
     tag: POST_TAG,
   });
 
   if (post.status === 404) return notFound();
 
-  const relatedPosts = await getData<Post[]>("api/posts", {
+  const relatedPosts = await getData<Post[]>("/api/posts", {
     query: { categoryId: post.data.categoryId, limit: 2, not: post.data.slug },
     tag: POST_TAG,
   });
-
+  const comments = await db.comment.findMany({
+    where: { postId: post.data.id, authorId: session?.user.id },
+    include: { author: true },
+  });
   const isLiked = false; // Temporary value
   const likeCount = 5; // Temporary value
 
-  console.log("slug: ", decodedSlug);
-  console.log("Post: ", post);
+  // console.log("slug: ", decodedSlug);
+  // console.log("Post: ", post);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -129,61 +136,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           ))}
         </div>
       </section>
-
-      {/* TODO */}
-      {/* <section className="mb-10">
-        <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
-          Comments
-        </h2>
-        {comments.map((comment) => (
-          <Card key={comment.id} className="mb-6">
-            <CardHeader>
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage
-                    src="/placeholder-avatar.jpg"
-                    alt={comment.author}
-                  />
-                  <AvatarFallback>
-                    {comment.author
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium text-gray-900 dark:text-gray-100">
-                    {comment.author}
-                  </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {comment.date}
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-700 dark:text-gray-400">
-                {comment.content}
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button variant="ghost" size="sm">
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Reply
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-        <form onSubmit={handleCommentSubmit} className="mt-4">
-          <Textarea
-            placeholder="Add a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="mb-2"
-          />
-          <Button type="submit">Post Comment</Button>
-        </form>
-      </section> */}
+      <Comments comments={comments} postId={post.data.id} />
     </div>
   );
 }
