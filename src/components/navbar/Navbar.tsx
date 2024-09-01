@@ -32,8 +32,8 @@ const navigationLinks = [
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6 z-50">
-      <Link className="text-2xl min-w-[100px] lg:text-4xl" href="/">
+    <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b px-4 backdrop-blur-lg lg:px-6">
+      <Link className="min-w-[100px] text-2xl lg:text-4xl" href="/">
         <Logo />
       </Link>
       <nav className="ml-auto hidden gap-4 sm:gap-6 md:flex">
@@ -47,15 +47,6 @@ export default function Navbar() {
           </Link>
         ))}
 
-        {/* {session && session.user.role === "ADMIN" && (
-          <Link
-            className="text-sm font-medium underline-offset-4 hover:underline"
-            href="/admin/blog"
-          >
-            Admin
-          </Link>
-        )} */}
-
         <Suspense>
           <AdminLink />
         </Suspense>
@@ -65,31 +56,11 @@ export default function Navbar() {
 
         <NavbarThemeSwitch />
 
-        {/* {session ? (
-          <LogoutButton />
-        ) : (
-          <Link
-            className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 sm:h-9 sm:px-4 sm:py-2 sm:text-sm"
-            href="/login"
-          >
-            Login
-          </Link>
-        )} */}
-
         <Suspense>
           <AuthButton />
         </Suspense>
 
         <ResponsiveNav navLinks={navigationLinks}>
-          {/* {session && session.user.role === "ADMIN" && (
-            <Link
-              className="text-sm font-medium underline-offset-4 hover:underline"
-              href="/admin/blog"
-            >
-              Admin
-            </Link>
-          )} */}
-
           <Suspense>
             <AdminLink />
           </Suspense>

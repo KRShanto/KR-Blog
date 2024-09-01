@@ -44,7 +44,7 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <NextTopLoader showSpinner={false} />
+          {/* <NextTopLoader showSpinner={false} /> */}
           <Navbar />
           <div className="flex min-h-screen flex-col bg-background text-foreground">
             {children}
