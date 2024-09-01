@@ -14,6 +14,12 @@ import { getData } from "@/lib/getData";
 import { Category, Post } from "@prisma/client";
 import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: "Welcome to your ultimate source to supercharge your business.",
+};
 
 const font = Outfit({ subsets: ["latin"] });
 
