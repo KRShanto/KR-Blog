@@ -1,5 +1,3 @@
-import { auth } from "@/app/auth";
-import { AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,17 +8,14 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { POST_TAG } from "@/lib/consts";
-import { db } from "@/lib/db";
 import { getData } from "@/lib/getData";
 import { Post } from "@prisma/client";
-import { Avatar } from "@radix-ui/react-avatar";
-import { Heart, Linkedin, MessageCircle, Share2 } from "lucide-react";
+import { Heart, Linkedin, Share2 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
-import Comments from "../../Comments";
 
 export async function generateStaticParams() {
   const posts = await getData<Post[]>("/api/posts", {
@@ -32,7 +27,6 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const session = await auth();
   const decodedSlug = decodeURIComponent(params.slug);
   const post = await getData<Post>("/api/posts", {
     query: { slug: decodedSlug },
@@ -45,18 +39,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
     query: { categoryId: post.data.categoryId, limit: 2, not: post.data.slug },
     tag: POST_TAG,
   });
-  const comments = await db.comment.findMany({
-    where: { postId: post.data.id, authorId: session?.user.id },
-    include: { author: true },
-  });
+
   const isLiked = false; // Temporary value
   const likeCount = 5; // Temporary value
 
-  // console.log("slug: ", decodedSlug);
-  // console.log("Post: ", post);
-
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8">
+    <>
       <article className="mx-auto">
         <h1 className="mb-8 text-4xl font-bold text-gray-900 dark:text-gray-100">
           {post.data.title}
@@ -136,7 +124,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
           ))}
         </div>
       </section>
-      <Comments comments={comments} postId={post.data.id} />
-    </div>
+    </>
   );
 }
