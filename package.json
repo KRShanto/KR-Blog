@@ -32,6 +32,7 @@
     "clsx": "^2.1.1",
     "email-validator": "^2.0.4",
     "firebase": "^10.13.0",
+    "framer-motion": "^11.3.31",
     "lottie-react": "^2.4.0",
     "lqip-modern": "^2.1.0",
     "lucide-react": "^0.436.0",

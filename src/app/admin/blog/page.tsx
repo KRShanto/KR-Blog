@@ -3,6 +3,11 @@ import BlogCard from "./_component/BlogCard";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "All Posts",
+};
 
 export default async function Page() {
   const blogPosts = await db.post.findMany();

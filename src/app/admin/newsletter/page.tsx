@@ -12,6 +12,10 @@ import { db } from "@/lib/db";
 import EditSubscriber from "./EditSubscriber";
 import DeleteSubscriber from "./DeleteSubscriber";
 
+export const metadata = {
+  title: "Newsletter Subscribers",
+};
+
 export default async function Page() {
   const subscribers = await db.newsletterSubscription.findMany();
 

@@ -1,5 +1,11 @@
 import { SITE_NAME } from "@/lib/consts";
 import { ArrowRight, Code, Lightbulb, Rocket, Signal } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `About Us | ${SITE_NAME}`,
+  description: `Discover the mission and focus areas of ${SITE_NAME}. We aim to empower businesses and individuals with cutting-edge insights and practical knowledge in technology, business growth, and digital innovation. Learn more about our journey and how we can help you thrive in the digital age.`,
+};
 
 export default function AboutUs() {
   const focusAreas = [

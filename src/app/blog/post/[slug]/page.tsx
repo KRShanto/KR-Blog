@@ -7,11 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { POST_TAG } from "@/lib/consts";
+import { POST_TAG, SITE_NAME } from "@/lib/consts";
 import { getData } from "@/lib/getData";
 import { Post } from "@prisma/client";
 import { Heart, Linkedin, Share2 } from "lucide-react";
 import moment from "moment";
+import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,6 +25,51 @@ export async function generateStaticParams() {
   return posts.data.map((post: Post) => ({
     slug: post.slug,
   }));
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const decodedSlug = decodeURIComponent(params.slug);
+  const data = await getData<Post>("/api/posts", {
+    query: { slug: decodedSlug },
+    tag: POST_TAG,
+  });
+
+  if (data.status === 404) return notFound();
+
+  const post = data.data;
+
+  // Get the previous images
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: `${post.seoTitle} | ${SITE_NAME}`,
+    description: post.seoDescription,
+    keywords: post.keywords.map((keyword) => keyword).join(", "),
+    alternates: {
+      canonical: `/blog/post/${post.slug}`,
+    },
+    openGraph: {
+      title: `${post.seoTitle} | ${SITE_NAME}`,
+      description: post.seoDescription,
+      url: new URL(`${process.env.NEXT_PUBLIC_APP_URL}/blog/post/${post.slug}`),
+      type: "article",
+      publishedTime: new Date(post.createdAt).toISOString(),
+      authors: ["KR Shanto"],
+      siteName: SITE_NAME,
+      images: [
+        {
+          url: post.image || "",
+          alt: post.imageAlt || post.title,
+          width: 800,
+          height: 600,
+        },
+        ...previousImages,
+      ],
+    },
+  };
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {

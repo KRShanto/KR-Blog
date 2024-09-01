@@ -12,13 +12,14 @@ import Logo from "@/components/Logo";
 import { Outfit } from "next/font/google";
 import { getData } from "@/lib/getData";
 import { Category, Post } from "@prisma/client";
-import { CATEGORY_TAG, POST_TAG } from "@/lib/consts";
+import { CATEGORY_TAG, POST_TAG, SITE_NAME } from "@/lib/consts";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Home",
-  description: "Welcome to your ultimate source to supercharge your business.",
+  title: `Welcome to ${SITE_NAME} - Empower Your Business Growth`,
+  description:
+    "Discover insightful articles, expert tips, and the latest trends to supercharge your business. Explore our featured posts and diverse categories to stay ahead in today's competitive market.",
 };
 
 const font = Outfit({ subsets: ["latin"] });

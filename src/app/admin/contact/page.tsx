@@ -8,6 +8,10 @@ import {
 import { db } from "@/lib/db";
 import ContactRow from "./ContactRow";
 
+export const metadata = {
+  title: "Contacts List",
+};
+
 export default async function ContactsPage() {
   const contacts = await db.contact.findMany();
 

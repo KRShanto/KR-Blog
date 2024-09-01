@@ -12,6 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Facebook, Github, Instagram, Linkedin, Twitter } from "lucide-react";
 import Submit from "./Submit";
+import { Metadata } from "next";
+import { SITE_NAME } from "@/lib/consts";
+
+export const metadata: Metadata = {
+  title: `Get in Touch with Us | ${SITE_NAME}`,
+  description: `We're here to help! Reach out to the ${SITE_NAME} team with your questions, feedback, or inquiries. We're committed to providing you with the support and information you need.`,
+};
 
 export default function ContactForm() {
   return (

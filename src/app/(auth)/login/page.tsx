@@ -1,72 +1,31 @@
-"use client";
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { Metadata } from "next";
+import { SITE_NAME } from "@/lib/consts";
+import SubmitBtn from "./SubmitBtn";
+
+export const metadata: Metadata = {
+  title: `Log In to Your Account | ${SITE_NAME}`,
+  description: `Access your personalized dashboard and stay connected with the latest insights and updates from ${SITE_NAME}. Enter your credentials to log in and continue exploring our content.`,
+};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    // Here you would typically send the login data to your server
-    // This is a mock API call
-    try {
-      if (!email || !password) {
-        throw new Error("Please fill in all fields.");
-      }
-
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-      setIsSubmitting(false);
-
-      if (res?.error) {
-        throw new Error("");
-      }
-
-      // Redirect to the home page
-      window.location.href = "/";
-    } catch (err: any) {
-      setError(
-        err.message ||
-          "Invalid email or password. Please try again. Or sign up if you don't have an account.",
-      );
-    }
-  };
-
   return (
     <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account.
-          </CardDescription>
+          <CardTitle>Login Account</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -74,8 +33,7 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   placeholder="Your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
                   required
                 />
               </div>
@@ -85,26 +43,13 @@ export default function LoginPage() {
                   id="password"
                   type="password"
                   placeholder="Your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="password"
                   required
                 />
               </div>
             </div>
-            {error && (
-              <Alert variant="destructive" className="mt-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            <Button
-              type="submit"
-              className="mt-4 w-full"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Logging in..." : "Log in"}
-            </Button>
+
+            <SubmitBtn />
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">

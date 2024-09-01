@@ -14,6 +14,10 @@ import { Crown, User } from "lucide-react";
 import { auth } from "@/app/auth";
 import DeleteUser from "./DeleteUser";
 
+export const metadata = {
+  title: "Users List",
+};
+
 export default async function UsersPage() {
   const users = await db.user.findMany({
     select: {

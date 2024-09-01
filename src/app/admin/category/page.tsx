@@ -1,6 +1,10 @@
 import { db } from "@/lib/db";
 import CategoryContainer from "./_component/CategoryContainer";
 
+export const metadata = {
+  title: "All Categories",
+};
+
 export default async function CategoryPage() {
   const categories = await db.category.findMany();
   return (
