@@ -57,7 +57,7 @@ export default function CommentBox({ postId }: TProps) {
         onChange={(e) => setNewComment(e.target.value)}
         className="mb-2"
       />
-      <Button disabled={pending} type="submit">
+      <Button disabled={pending || newComment.trim() === ""} type="submit">
         Post Comment
       </Button>
     </form>
