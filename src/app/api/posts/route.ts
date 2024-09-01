@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 // else if the query has a `featured` parameter, we'll assume it's a request for featured posts
 // otherwise, we'll assume it's a request for all posts
 
+export const revalidate = 0;
+
 export async function GET(req: NextRequest) {
   const search = req.nextUrl.searchParams;
   const slug = search.get("slug");
