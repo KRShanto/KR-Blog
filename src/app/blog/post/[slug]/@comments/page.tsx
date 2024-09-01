@@ -1,4 +1,4 @@
-import Comments from "@/app/blog/Comments";
+import Comments from "./Comments";
 import { db } from "@/lib/db";
 import React from "react";
 
@@ -13,9 +13,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   const comments = await db.comment.findMany({
-    where: { postId: post.id },
-    include: { author: true },
+    where: { postId: post.id, parentCommentId: null },
+    include: {
+      author: true,
+      replies: {
+        include: { author: true },
+      },
+    },
   });
-
   return <Comments comments={comments} postId={post.id} />;
 }

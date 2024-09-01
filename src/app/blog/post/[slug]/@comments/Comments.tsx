@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,12 +11,19 @@ import { Comment, User } from "@prisma/client";
 import { MessageCircle } from "lucide-react";
 import CommentBox from "./CommentBox";
 import getFormattedDate from "@/lib/getFormattedDate";
+import ReplyCommentBox from "./ReplyCommentBox";
+import { useState } from "react";
+import ReplyComment from "./ReplyComment";
 
 type TProps = {
   postId: number;
-  comments: (Comment & { author: User })[];
+  comments: (Comment & {
+    author: User;
+    replies: (Comment & { author: User })[];
+  })[];
 };
 export default function Comments({ comments, postId }: TProps) {
+  const [isReply, setIsReply] = useState(false);
   return (
     <section className="mb-10">
       <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -52,12 +60,31 @@ export default function Comments({ comments, postId }: TProps) {
             <p className="text-gray-700 dark:text-gray-400">
               {comment.content}
             </p>
+            {comment.replies.length > 0 &&
+              comment.replies.map((repComment) => (
+                <ReplyComment key={repComment.id} repComment={repComment} />
+              ))}
+            {isReply && (
+              <div className="ml-10">
+                <ReplyCommentBox
+                  parentCommentId={comment.id}
+                  postId={postId}
+                  setIsReply={setIsReply}
+                />
+              </div>
+            )}
           </CardContent>
           <CardFooter>
-            <Button variant="ghost" size="sm">
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Reply
-            </Button>
+            {!isReply && (
+              <Button
+                onClick={() => setIsReply(true)}
+                variant="ghost"
+                size="sm"
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Reply
+              </Button>
+            )}
           </CardFooter>
         </Card>
       ))}

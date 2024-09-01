@@ -10,7 +10,7 @@ export default async function Page() {
   const categoris = await getData<Category[]>("/api/categories", {
     tag: CATEGORY_TAG,
   });
-
+  console.log({ posts });
   return (
     <BlogPage
       posts={posts.data}
