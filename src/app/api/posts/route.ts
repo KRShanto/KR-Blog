@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-// if the query has a `slug` parameter, we'll assume it's a request for a single post
-// else if the query has a `featured` parameter, we'll assume it's a request for featured posts
-// otherwise, we'll assume it's a request for all posts
-
 export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
@@ -55,10 +51,10 @@ export async function GET(req: NextRequest) {
   const posts = await db.post.findMany({
     where: {
       published: true,
-      isFeatured: notFeatured ? false : true,
+      isFeatured: notFeatured ? false : undefined,
       NOT: { slug: not },
     },
-    take: limit ? parseInt(limit) : undefined,
+    take: limit ? parseInt(limit) : 100, // TEMP,
   });
 
   return NextResponse.json(posts);
