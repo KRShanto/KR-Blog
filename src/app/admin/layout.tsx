@@ -1,8 +1,7 @@
-import { FileText, Mail, Tag, Users } from "lucide-react";
-import Link from "next/link";
-import React from "react";
 import Sidebar from "./Sidebar";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { auth } from "../auth";
 
 export const metadata: Metadata = {
   title: {
@@ -15,11 +14,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
+  if (!session || session.user.role !== "ADMIN") return notFound();
+
   return (
     <div className="flex">
       <Sidebar />
