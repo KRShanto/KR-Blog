@@ -17,6 +17,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
+import Likes from "./Likes";
+import { Suspense } from "react";
 
 export async function generateStaticParams() {
   const posts = await getData<Post[]>("/api/posts", {
@@ -86,9 +88,6 @@ export default async function Page({ params }: { params: { slug: string } }) {
     tag: POST_TAG,
   });
 
-  const isLiked = false; // Temporary value
-  const likeCount = 5; // Temporary value
-
   return (
     <>
       <article className="mx-auto">
@@ -107,14 +106,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
             Published on {moment(post.data.createdAt).format("MMMM D, YYYY")} by{" "}
           </p>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="icon">
-              <Heart
-                className={`h-4 w-4 ${isLiked ? "fill-current text-red-500" : ""}`}
-              />
-            </Button>
-            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              {likeCount} likes
-            </span>
+            <Suspense>
+              <Likes postId={post.data.id} />
+            </Suspense>
             <Button variant="outline" size="icon">
               <FaFacebook className="h-4 w-4 text-gray-900 dark:text-gray-100" />
             </Button>
