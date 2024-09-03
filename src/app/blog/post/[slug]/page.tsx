@@ -148,7 +148,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 />
               </CardHeader>
               <CardContent>
-                <CardTitle className="mb-2 text-gray-900 dark:text-gray-100">
+                <CardTitle className="mb-2 text-lg text-gray-900 dark:text-gray-100">
                   {post.title}
                 </CardTitle>
                 <p className="text-gray-600 dark:text-gray-400">
