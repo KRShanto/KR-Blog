@@ -1,4 +1,4 @@
-import Sidebar from "./Sidebar";
+import Sidebar from "../../components/Sidebar";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auth } from "../auth";
