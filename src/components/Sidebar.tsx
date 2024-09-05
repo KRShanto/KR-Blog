@@ -1,7 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Contact, FileText, Mail, Menu, Tag, Users, X } from "lucide-react";
+import {
+  Contact,
+  FileText,
+  Mail,
+  Menu,
+  Tag,
+  Users,
+  X,
+  Lightbulb,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -12,6 +21,7 @@ const paths = [
   { href: "/admin/user", icon: Users, label: "Users" },
   { href: "/admin/newsletter", icon: Mail, label: "Newsletter" },
   { href: "/admin/contact", icon: Contact, label: "Contact" },
+  { href: "/admin/idea", icon: Lightbulb, label: "Ideas" },
 ];
 
 export default function Sidebar() {
