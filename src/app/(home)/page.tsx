@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   title: `Welcome to ${SITE_NAME} - Empower Your Business Growth`,
   description:
     "Discover insightful articles, expert tips, and the latest trends to supercharge your business. Explore our featured posts and diverse categories to stay ahead in today's competitive market.",
+  openGraph: {
+    title: `Welcome to ${SITE_NAME} - Empower Your Business Growth`,
+    description:
+      "Discover insightful articles, expert tips, and the latest trends to supercharge your business. Explore our featured posts and diverse categories to stay ahead in today's competitive market.",
+    images: ["/krblog.png"],
+    siteName: SITE_NAME,
+  },
 };
 
 const font = Outfit({ subsets: ["latin"] });
