@@ -10,7 +10,7 @@ type TProps = {
   setBlogData: React.Dispatch<React.SetStateAction<BlogData>>;
 };
 
-export default function KeywordsInput({blogData, setBlogData}:TProps) {
+export default function KeywordsInput({ blogData, setBlogData }: TProps) {
   const [keywordInput, setKeywordInput] = useState("");
   const handleKeywordInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeywordInput(e.target.value);
@@ -19,12 +19,17 @@ export default function KeywordsInput({blogData, setBlogData}:TProps) {
   const handleKeywordInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (e.key === "Enter" && keywordInput.trim()) {
+    if (e.key === "Enter") {
       e.preventDefault();
-      setBlogData((prev) => ({
-        ...prev,
-        keywords: [...prev.keywords, keywordInput.trim()],
-      }));
+
+      // separate keywords by comma
+      const keywords = keywordInput.split(",");
+      keywords.forEach((keyword) => {
+        setBlogData((prev) => ({
+          ...prev,
+          keywords: [...prev.keywords, keyword.trim()],
+        }));
+      });
       setKeywordInput("");
     }
   };
