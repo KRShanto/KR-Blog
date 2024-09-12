@@ -101,7 +101,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
           height={300}
           className="mb-6 w-full rounded-lg"
         />
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col items-center justify-between space-y-2 sm:flex-row sm:space-y-0">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Published on {moment(post.data.createdAt).format("MMMM D, YYYY")} by{" "}
           </p>
