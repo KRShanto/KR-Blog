@@ -445,7 +445,13 @@ export default function Dashboard() {
     { id: "settings", label: "Settings", icon: Settings },
   ];
 
-  const NavLink = ({ item, isMobile = false }) => (
+  const NavLink = ({
+    item,
+    isMobile = false,
+  }: {
+    item: (typeof NavItems)[0];
+    isMobile?: boolean;
+  }) => (
     <Button
       variant={activeTab === item.id ? "default" : "ghost"}
       className={`w-full justify-start ${isMobile ? "flex" : "hidden sm:flex"}`}
