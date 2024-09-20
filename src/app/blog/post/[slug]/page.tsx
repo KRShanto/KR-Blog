@@ -19,6 +19,7 @@ import { notFound } from "next/navigation";
 import { FaFacebook, FaTwitter } from "react-icons/fa";
 import Likes from "./Likes";
 import { Suspense } from "react";
+import Saves from "./Saves";
 
 export async function generateStaticParams() {
   const posts = await getData<Post[]>("/api/posts", {
@@ -108,6 +109,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <div className="flex items-center space-x-4">
             <Suspense>
               <Likes postId={post.data.id} />
+            </Suspense>
+            <Suspense>
+              <Saves postId={post.data.id} />
             </Suspense>
             <Button variant="outline" size="icon">
               <FaFacebook className="h-4 w-4 text-gray-900 dark:text-gray-100" />
