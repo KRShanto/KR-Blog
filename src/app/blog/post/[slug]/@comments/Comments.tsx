@@ -4,6 +4,8 @@ import { MessageCircle } from "lucide-react";
 import CommentBox from "./CommentBox";
 import CommentCard from "./CommentCard";
 import { Session } from "next-auth";
+import { useEffect } from "react";
+import highlightElementById from "@/lib/highlightElementById";
 
 type TProps = {
   postId: number;
@@ -12,8 +14,17 @@ type TProps = {
     replies: (Comment & { author: User })[];
   })[];
   session: Session | null;
+  commentIdForQuery: string;
 };
-export default function Comments({ session, comments, postId }: TProps) {
+export default function Comments({
+  session,
+  comments,
+  postId,
+  commentIdForQuery,
+}: TProps) {
+  useEffect(() => {
+    highlightElementById(commentIdForQuery);
+  }, [commentIdForQuery]);
   return (
     <section className="mb-10">
       <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">

@@ -3,7 +3,7 @@
 import { auth } from "@/app/auth";
 import { db } from "@/lib/db";
 import { Comment } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function addComment(comment: Partial<Comment>) {
   try {
@@ -21,6 +21,7 @@ export async function addComment(comment: Partial<Comment>) {
       },
     });
     revalidatePath("/blog/post");
+    revalidateTag("comments");
     return {
       success: true,
       status: 201,

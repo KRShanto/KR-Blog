@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { db } from "@/lib/db";
-import getFormattedDate from "@/lib/getFormattedDate";
 import { unstable_cache } from "next/cache";
 import CommentCard from "./CommentCard";
 
@@ -21,6 +20,7 @@ const getComments = unstable_cache(
         post: {
           select: {
             title: true,
+            slug: true,
           },
         },
       },

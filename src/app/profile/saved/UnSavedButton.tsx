@@ -1,6 +1,7 @@
 "use client";
 
 import { unSavedPost } from "@/actions/saved/unSavedPost";
+import ConfirmationModal from "@/components/ConfirmationModal";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Bookmark } from "lucide-react";
@@ -27,14 +28,15 @@ export default function UnSavedButton({ savedId }: { savedId: number }) {
     }
   };
   return (
-    <Button
-      disabled={pending}
-      onClick={() => startTransition(handleUnSavedPost)}
-      variant="outline"
-      size="sm"
+    <ConfirmationModal
+      title="Are you Sure UnSave This Post?"
+      description="UnSave Post confirmation!!"
+      onConfirm={() => startTransition(handleUnSavedPost)}
     >
-      <Bookmark className="mr-2 h-4 w-4" />
-      Remove
-    </Button>
+      <Button disabled={pending} variant="outline" size="sm">
+        <Bookmark className="mr-2 h-4 w-4" />
+        Remove
+      </Button>
+    </ConfirmationModal>
   );
 }

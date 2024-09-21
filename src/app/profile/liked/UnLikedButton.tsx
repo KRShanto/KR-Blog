@@ -1,5 +1,6 @@
 "use client";
 import { unlikedPost } from "@/actions/like/unLikedPost";
+import ConfirmationModal from "@/components/ConfirmationModal";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ThumbsUp } from "lucide-react";
@@ -26,14 +27,15 @@ export default function UnLikedButton({ likedId }: { likedId: number }) {
     }
   };
   return (
-    <Button
-      disabled={pending}
-      onClick={() => startTransition(handleUnLiked)}
-      variant="outline"
-      size="sm"
+    <ConfirmationModal
+      title="Are you Sure Unlike This Post?"
+      description="Unlike Post confirmation!!"
+      onConfirm={() => startTransition(handleUnLiked)}
     >
-      <ThumbsUp className="mr-2 h-4 w-4" />
-      Unlike
-    </Button>
+      <Button disabled={pending} variant="outline" size="sm">
+        <ThumbsUp className="mr-2 h-4 w-4" />
+        Unlike
+      </Button>
+    </ConfirmationModal>
   );
 }

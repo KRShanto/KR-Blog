@@ -1,6 +1,6 @@
-'use server'
+"use server";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function updateComment(
   commentId: number,
@@ -19,6 +19,7 @@ export async function updateComment(
     });
     if (response) {
       revalidatePath("/blog/post");
+      revalidateTag("comments");
       return {
         success: true,
         status: 200,

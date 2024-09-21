@@ -5,15 +5,17 @@ import React, { useState } from "react";
 import { User as AuthUser } from "next-auth";
 import { Pencil, Trash2 } from "lucide-react";
 import EditCommentBox from "./EditCommentBox";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
 type TProps = {
   repComment: Comment & { author: User };
   user: AuthUser | undefined;
+  onDelete: (commentId: number, userId: number) => void;
 };
-export default function ReplyComment({ repComment, user }: TProps) {
+export default function ReplyComment({ repComment, user, onDelete }: TProps) {
   const [isEdit, setIsEdit] = useState(false);
   return (
-    <div className="ml-10 mt-4 border-t pt-4">
+    <div id={repComment.id.toString()} className="ml-10 mt-4 border-t pt-4">
       <div className="flex items-start gap-4">
         <Avatar>
           <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
@@ -38,7 +40,15 @@ export default function ReplyComment({ repComment, user }: TProps) {
                     size={16}
                     className="cursor-pointer"
                   />
-                  <Trash2 size={16} className="cursor-pointer" />
+                  <ConfirmationModal
+                    title="Are you Sure Delete This Comment"
+                    description="delete comment permanently?"
+                    onConfirm={() =>
+                      onDelete(repComment.id, parseInt(user?.id!))
+                    }
+                  >
+                    <Trash2 size={16} className="cursor-pointer" />
+                  </ConfirmationModal>
                 </div>
               )}
             </div>
