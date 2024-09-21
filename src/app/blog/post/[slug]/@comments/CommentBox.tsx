@@ -37,7 +37,7 @@ export default function CommentBox({ postId }: TProps) {
   return (
     <form
       onSubmit={(e) => startTransition(() => handleCommentSubmit(e))}
-      className="mt-4"
+      className="mb-4"
     >
       <Textarea
         placeholder="Add a comment..."

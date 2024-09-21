@@ -19,8 +19,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
       author: true,
       replies: {
         include: { author: true },
+        orderBy: { createdAt: "asc" },
       },
     },
+    orderBy: { createdAt: "asc" },
   });
 
   const session = await auth();

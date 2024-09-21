@@ -50,7 +50,7 @@ export default async function SavedPosts() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="max-h-[400px] min-h-fit w-full overflow-y-auto">
+        <ScrollArea className="h-[400px] w-full">
           {savedPosts.length > 0 ? (
             savedPosts.map((savePost) => (
               <div key={savePost.id} className="mb-4 rounded-lg border p-4">

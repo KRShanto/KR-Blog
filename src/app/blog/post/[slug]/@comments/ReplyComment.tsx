@@ -1,12 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import getFormattedDate from "@/lib/getFormattedDate";
 import { Comment, User } from "@prisma/client";
-import React from "react";
+import React, { useState } from "react";
+import { User as AuthUser } from "next-auth";
+import { Pencil, Trash2 } from "lucide-react";
+import EditCommentBox from "./EditCommentBox";
 
 type TProps = {
   repComment: Comment & { author: User };
+  user: AuthUser | undefined;
 };
-export default function ReplyComment({ repComment }: TProps) {
+export default function ReplyComment({ repComment, user }: TProps) {
+  const [isEdit, setIsEdit] = useState(false);
   return (
     <div className="ml-10 mt-4 border-t pt-4">
       <div className="flex items-start gap-4">
@@ -22,14 +27,32 @@ export default function ReplyComment({ repComment }: TProps) {
         </Avatar>
         <div className="flex-1">
           <div className="flex flex-col items-start">
-            <div className="font-medium">{repComment.author.name}</div>
+            <div className="flex items-center space-x-2">
+              <p className="font-medium text-gray-900 dark:text-gray-100">
+                {repComment.author?.name}
+              </p>
+              {repComment?.authorId === parseInt(user?.id!) && (
+                <div className="flex space-x-2">
+                  <Pencil
+                    onClick={() => setIsEdit((prev) => !prev)}
+                    size={16}
+                    className="cursor-pointer"
+                  />
+                  <Trash2 size={16} className="cursor-pointer" />
+                </div>
+              )}
+            </div>
             <div className="text-xs text-muted-foreground">
               {getFormattedDate(repComment.createdAt)}
             </div>
           </div>
-          <p className="mt-2 text-gray-700 dark:text-gray-400">
-            {repComment.content}
-          </p>
+          {isEdit ? (
+            <EditCommentBox comment={repComment} setIsEdit={setIsEdit} />
+          ) : (
+            <p className="text-gray-700 dark:text-gray-400">
+              {repComment.content}
+            </p>
+          )}
         </div>
       </div>
     </div>

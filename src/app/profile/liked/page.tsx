@@ -48,7 +48,7 @@ export default async function LikedPosts() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="max-h-[400px] min-h-fit w-full overflow-y-auto">
+        <ScrollArea className="h-[400px] w-full">
           {likedPosts.length > 0 ? (
             likedPosts.map((likePost) => (
               <div key={likePost.id} className="mb-4 rounded-lg border p-4">
