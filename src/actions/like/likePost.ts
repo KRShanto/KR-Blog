@@ -2,7 +2,7 @@
 
 import { auth } from "@/app/auth";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function likePost({ postId }: { postId: number }) {
   const session = await auth();
@@ -46,6 +46,7 @@ export async function likePost({ postId }: { postId: number }) {
   }
 
   revalidatePath(`/blog/post`);
+  revalidateTag("liked-post");
 
   return {
     type: "success",

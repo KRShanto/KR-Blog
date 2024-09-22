@@ -4,12 +4,12 @@ import React from "react";
 import LikeButton from "./LikeButton";
 
 export default async function Likes({ postId }: { postId: number }) {
+  const session = await auth();
   const likes = await db.like.findMany({
     where: {
       postId,
     },
   });
-  const session = await auth();
 
   const likeCount = likes.length;
   const isLiked = likes.some((like) => like.userId === session?.user.id);
